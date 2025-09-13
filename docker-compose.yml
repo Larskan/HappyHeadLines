@@ -13,11 +13,7 @@ services:
 
   # ---------- ArticleService with 3 replicas ----------
   article-service:
-    build:
-      context: ./src/ArticleService
-      dockerfile: Dockerfile
-      args:
-        SERVICE_NAME: ArticleService
+    image: happyheadlines/article-service
     depends_on:
       - sqlserver
     deploy:
@@ -27,70 +23,45 @@ services:
 
   # ---------- Other services (single replica each) ----------
   draft-service:
-    build:
-      context: ./src/DraftService
-      dockerfile: Dockerfile
-      args:
-        SERVICE_NAME: DraftService
+    image: happyheadlines/draft-service
     depends_on:
       - sqlserver
     ports:
       - "8001:80"
 
   publisher-service:
-    build:
-      context: ./src/PublisherService
-      dockerfile: Dockerfile
-      args:
-        SERVICE_NAME: PublisherService
+    image: happyheadlines/publisher-service
     depends_on:
       - sqlserver
     ports:
       - "8002:80"
-
   comment-service:
-    build:
-      context: ./src/CommentService
-      dockerfile: Dockerfile
-      args:
-        SERVICE_NAME: CommentService
+    image: happyheadlines/comment-service
     depends_on:
       - sqlserver
     ports:
       - "8003:80"
-
   subscriber-service:
-    build:
-      context: ./src/SubscriberService
-      dockerfile: Dockerfile
-      args:
-        SERVICE_NAME: SubscriberService
+    image: happyheadlines/subscriber-service
     depends_on:
       - sqlserver
     ports:
       - "8004:80"
-
+  
   profanity-service:
-    build:
-      context: ./src/ProfanityService
-      dockerfile: Dockerfile
-      args:
-        SERVICE_NAME: ProfanityService
+    image: happyheadlines/profanity-service
     depends_on:
       - sqlserver
     ports:
       - "8005:80"
 
   newsletter-service:
-    build:
-      context: ./src/NewsletterService
-      dockerfile: Dockerfile
-      args:
-        SERVICE_NAME: NewsletterService
+    image: happyheadlines/newsletter-service
     depends_on:
       - sqlserver
     ports:
       - "8006:80"
+
 
 volumes:
   mssql-data:
