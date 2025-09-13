@@ -1,0 +1,96 @@
+version: "3.9"
+services:
+  # ---------- SQL Server ----------
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "My_Passw0rd123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+
+  # ---------- ArticleService with 3 replicas ----------
+  article-service:
+    build:
+      context: ./src/ArticleService
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: ArticleService
+    depends_on:
+      - sqlserver
+    deploy:
+      replicas: 3
+    ports:
+      - "8000:80"
+
+  # ---------- Other services (single replica each) ----------
+  draft-service:
+    build:
+      context: ./src/DraftService
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: DraftService
+    depends_on:
+      - sqlserver
+    ports:
+      - "8001:80"
+
+  publisher-service:
+    build:
+      context: ./src/PublisherService
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: PublisherService
+    depends_on:
+      - sqlserver
+    ports:
+      - "8002:80"
+
+  comment-service:
+    build:
+      context: ./src/CommentService
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: CommentService
+    depends_on:
+      - sqlserver
+    ports:
+      - "8003:80"
+
+  subscriber-service:
+    build:
+      context: ./src/SubscriberService
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: SubscriberService
+    depends_on:
+      - sqlserver
+    ports:
+      - "8004:80"
+
+  profanity-service:
+    build:
+      context: ./src/ProfanityService
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: ProfanityService
+    depends_on:
+      - sqlserver
+    ports:
+      - "8005:80"
+
+  newsletter-service:
+    build:
+      context: ./src/NewsletterService
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: NewsletterService
+    depends_on:
+      - sqlserver
+    ports:
+      - "8006:80"
+
+volumes:
+  mssql-data:
