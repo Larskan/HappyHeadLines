@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "DTiQqATM7xlXF6QaO4b8lIeDu3FjBWF2rn2fdWZvhWg=",
+  "Source": "Webapp.Website",
+  "BasePath": "_content/Webapp.Website",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

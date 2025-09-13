@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: hh
+      POSTGRES_PASSWORD: hhpass
+      POSTGRES_DB: happyheadlines
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  profanity:
+    build: ./src/ProfanityService
+    depends_on:
+      - postgres
+    environment:
+      - ASPNETCORE_URLS=http://*:5000
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=happyheadlines;Username=hh;Password=hhpass
+    ports:
+      - "5000:5000"
+
+  publisher:
+    build: ./src/PublisherService
+    depends_on:
+      - profanity
+      - rabbitmq
+    environment:
+      - PROFANITY_URL=http://profanity:5000
+      - RABBIT_HOST=rabbitmq
+    ports:
+      - "5010:80"
+
+  articles:
+    build: ./src/ArticleService
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      - ConnectionStrings__ArticlesConnection=Host=postgres;Port=5432;Database=happyheadlines;Username=hh;Password=hhpass
+      - RABBIT_HOST=rabbitmq
+    ports:
+      - "5020:80"
+
+volumes:
+  pgdata:
