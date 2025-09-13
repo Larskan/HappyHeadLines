@@ -1,15 +1,15 @@
 # DraftService/Dockerfile
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 5000
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 WORKDIR /src
 
 # Copy project files
-COPY ["DraftService/DraftService.csproj", "DraftService/"]
-COPY ["Shared/Shared.csproj", "Shared/"]
+COPY ["src/DraftService/DraftService.csproj", "DraftService/"]
+COPY ["src/Shared/Shared.csproj", "Shared/"]
 
 # Restore dependencies
 RUN dotnet restore "DraftService/DraftService.csproj"

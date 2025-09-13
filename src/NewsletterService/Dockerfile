@@ -1,14 +1,14 @@
 # NewsletterService/Dockerfile
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 5000
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Copy project files
-COPY ["NewsletterService/NewsletterService.csproj", "NewsletterService/"]
-COPY ["Shared/Shared.csproj", "Shared/"]
+COPY ["src/NewsletterService/NewsletterService.csproj", "NewsletterService/"]
+COPY ["src/Shared/Shared.csproj", "Shared/"]
 
 # Restore dependencies
 RUN dotnet restore "NewsletterService/NewsletterService.csproj"
