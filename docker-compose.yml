@@ -39,6 +39,7 @@ services:
     image: happyheadlines/comment-service
     depends_on:
       - sqlserver
+      - profanity-service
     ports:
       - "8003:80"
   subscriber-service:

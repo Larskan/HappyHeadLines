@@ -11,6 +11,6 @@ public class Comment
 {
     public int Id { get; set; }
     public int ArticleId { get; set; }
-    public string Content { get; set; }
+    public string Text { get; set; } = null!;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
