@@ -1,12 +1,13 @@
 The overall todo
 - C4 Diagram - Done
 - C4 Diagram for all 4 levels - Do last
-- Implement ArticleService with CRUD and REST API and x-axis with 3 instances and load balancer.
-- Implement ArticleDatabase and y-axis so each continent has own DB + a global DB
-- Implement CommentService. Fault Isolated with swimlanes. Takes over if Profanity Fails
-- Implement CommentDatabase.
-- Implement ProfanityService. Fault Isolated with swimlanes
-- Implement ProfanityDatabase. 
+- Implement ArticleService with CRUD and REST API and x-axis with 3 instances and load balancer - Done
+- Implement ArticleDatabase and y-axis so each continent has own DB + a global DB - Done
+- Implement CommentService. Fault Isolated with swimlanes. Takes over if Profanity Fails - Done
+- Implement CommentDatabase - Done
+- Implement ProfanityService. Fault Isolated with swimlanes - Done
+- Implement ProfanityDatabase.  - Done
+---------------------------------------------
 - Implement Draftservice with logging and tracing.
 - Implement DraftDatabase with logging and tracing.
 - Log and trace in central repo that is reuseable across entire architecture.
