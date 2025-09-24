@@ -6,6 +6,7 @@ using NewsletterService.Services;
 using Microsoft.EntityFrameworkCore;
 using RabbitMQ.Client;
 using Microsoft.AspNetCore.Builder;
+using Shared;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,14 +17,15 @@ builder.Services.AddDbContext<NewsletterDbContext>(options => options.UseSqlServ
 builder.Services.AddScoped<INewsArticleRepository, NewsArticleRepository>();
 
 // RabbitMQ singleton connection
-builder.Services.AddSingleton<IConnection>(sp =>
-{
-    var factory = new ConnectionFactory() { HostName = "localhost" };
-    return (IConnection)factory.CreateConnectionAsync();
-});
+var connection = await RabbitHelper.CreateConnectionAsync();
+builder.Services.AddSingleton(connection);
+// builder.Services.AddSingleton<IConnection>(sp =>
+// {
+//     var factory = new ConnectionFactory() { HostName = "localhost" };
+//     return (IConnection)factory.CreateConnectionAsync();
+// });
 
 // Background subscriber service
-builder.Services.AddHostedService<Worker>();
 builder.Services.AddHostedService<ArticleQueueSubscriber>();
 
 var app = builder.Build();
