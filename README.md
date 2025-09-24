@@ -1,8 +1,8 @@
-## Happy Head Lines - A Project of Microservices and Containers.
+# Happy Head Lines - A Project of Microservices and Containers.
 
-# Introduction
+## Introduction
 
-# Technologies used
+## Technologies used
 VS Code IDE
 
 Microsoft SQL
