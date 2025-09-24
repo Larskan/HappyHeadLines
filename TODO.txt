@@ -43,3 +43,12 @@ Communication:
 To see my DB running after docker-compose up -d:
 - docker exec -it <sqlserver-container-name> /opt/mssql-tools/bin/sqlcmd \ -S localhost -U sa -P $SA_PASSWORD
 - List DB: SELECT Name FROM sys.Databases;
+
+logging
+- Trace: Entering/exiting methods, payloads, EF Core Queries(Debugging)
+- Information: Draft created, updated, deleted.
+- Warning: Unexpected but non fatal, like missing fields.
+- Error: Exceptions, failed DB Operations, failed HTTP calls to other services.
+- Critical: Service crash, DB down, unrecoverable errors.
+- Note: Dont log passwords and sensitive data.
+- Auto cleaning?: Central Log Aggregator(Elasticsearch, Seq, Splunk), Rolling file logs(Serilog)
