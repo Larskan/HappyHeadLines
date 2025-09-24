@@ -36,3 +36,4 @@ Communication:
 - Controller: "Hey Lars, I got a request for Europe"
 - Service: "Cool, let me validate and prepare the article"
 - Repo: "Okay, I will save it in Europes DB"
+- Interface: "I am just watching, ignore me"

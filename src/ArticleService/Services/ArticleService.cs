@@ -56,6 +56,7 @@ public class ArticleService : IArticleService
     public async Task<bool> DeleteArticleAsync(Guid id, string continent) =>
         await _repository.DeleteArticleAsync(id, continent);
     
+    // Mapping method from Article to ArticleDto
     private static ArticleDto ToDto(Article a) =>
         new ArticleDto(a.Id, a.Title, a.Body, a.PublishedAt, a.Author);
     

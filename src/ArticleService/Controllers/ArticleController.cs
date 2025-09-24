@@ -17,6 +17,7 @@ public class ArticleController : ControllerBase
         _service = service;
     }
 
+    // Helper method to get continent from headers, defaulting to "Global"
     private string GetContinent() =>
         HttpContext.Request.Headers["X-Continent"].ToString() ?? "Global";
 
