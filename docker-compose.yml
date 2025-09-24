@@ -8,7 +8,12 @@ services:
       SA_PASSWORD: ${SA_PASSWORD}
       ACCEPT_EULA: ${ACCEPT_EULA}
     ports:
-      - "1433:1433"
+      - "1435:1433"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "</dev/tcp/localhost/1433"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     volumes:
       - mssql-data:/var/opt/mssql
 
@@ -19,6 +24,7 @@ services:
       - sqlserver
     environment:
       DATABASE_NAME: ${ARTICLE_DB}
+      SA_PASSWORD: ${SA_PASSWORD}
     deploy:
       replicas: 3
     ports:
@@ -28,11 +34,13 @@ services:
   draft-service:
     image: happyheadlines/draft-service
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_healthy
     environment:
       DATABASE_NAME: ${DRAFT_DB}
+      SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "8001:80"
+      - "8010:80"
 
   publisher-service:
     image: happyheadlines/publisher-service
@@ -40,6 +48,7 @@ services:
       - sqlserver
     environment:
       DATABASE_NAME: ${PUBLISHER_DB}
+      SA_PASSWORD: ${SA_PASSWORD}
     ports:
       - "8002:80"
   comment-service:
@@ -49,6 +58,7 @@ services:
       - profanity-service
     environment:
       DATABASE_NAME: ${COMMENT_DB}
+      SA_PASSWORD: ${SA_PASSWORD}
     ports:
       - "8003:80"
   subscriber-service:
@@ -57,6 +67,7 @@ services:
       - sqlserver
     environment:
       DATABASE_NAME: ${SUBSCRIBER_DB}
+      SA_PASSWORD: ${SA_PASSWORD}
     ports:
       - "8004:80"
   
@@ -66,6 +77,7 @@ services:
       - sqlserver
     environment:
       DATABASE_NAME: ${PROFANITY_DB}
+      SA_PASSWORD: ${SA_PASSWORD}
     ports:
       - "8005:80"
 
@@ -75,6 +87,7 @@ services:
       - sqlserver
     environment:
       DATABASE_NAME: ${NEWSLETTER_DB}
+      SA_PASSWORD: ${SA_PASSWORD}
     ports:
       - "8006:80"
 

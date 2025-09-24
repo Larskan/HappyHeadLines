@@ -5,7 +5,7 @@ namespace DraftService.Interfaces;
 public interface IDraftRepository
 {
     Task<Draft> CreateDraftAsync(Draft draft);
-    Task<List<Draft>> GetAllDraftsAsync(Guid authorId);
+    Task<List<Draft>> GetAllDraftsAsync(int authorId);
     Task<Draft?> UpdateDraftAsync(Draft draft);
-    Task<bool> DeleteDraftAsync(Guid id);
+    Task<bool> DeleteDraftAsync(int id);
 }

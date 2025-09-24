@@ -17,15 +17,15 @@ public class DraftController : ControllerBase
 
     // GET: api/Draft
     [HttpGet]
-    public async Task<ActionResult<List<DraftDto>>> GetAllDrafts([FromQuery] Guid authorId)
+    public async Task<ActionResult<List<DraftDto>>> GetAllDrafts([FromQuery] int authorId)
     {
         var drafts = await _draftService.GetAllDraftsAsync(authorId);
         return Ok(drafts);
     }
 
     // GET: api/Draft/{id}
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult<DraftDto>> GetDraftById(Guid id)
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<DraftDto>> GetDraftById(int id)
     {
         var draft = await _draftService.GetDraftByIdAsync(id);
         if (draft is null) return NotFound();
@@ -41,8 +41,8 @@ public class DraftController : ControllerBase
     }
 
     // PUT: api/Draft/{id}
-    [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateDraft(Guid id, [FromBody] DraftUpdateDto draftUpdateDto)
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateDraft(int id, [FromBody] DraftUpdateDto draftUpdateDto)
     {
         var updated = await _draftService.UpdateDraftAsync(id, draftUpdateDto);
         if (!updated) return NotFound();
@@ -50,8 +50,8 @@ public class DraftController : ControllerBase
     }
 
     // DELETE: api/Draft/{id}
-    [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteDraft(Guid id)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteDraft(int id)
     {
         var deleted = await _draftService.DeleteDraftAsync(id);
         if (!deleted) return NotFound();

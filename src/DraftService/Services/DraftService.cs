@@ -22,7 +22,7 @@ public class DraftService : IDraftService
     {
         var draft = new Draft
         {
-            Id = Guid.NewGuid(),
+            Id = draftCreateDto.AuthorId,
             Title = draftCreateDto.Title,
             Body = draftCreateDto.Body,
             AuthorId = draftCreateDto.AuthorId,
@@ -36,19 +36,19 @@ public class DraftService : IDraftService
         return ToDtoCreate(draft);
     }
 
-    public async Task<DraftDto?> GetDraftByIdAsync(Guid id)
+    public async Task<DraftDto?> GetDraftByIdAsync(int id)
     {
         var draft = await _context.Drafts.FindAsync(id);
         return draft == null ? null : ToDto(draft);
     }
 
-    public async Task<List<DraftDto>> GetAllDraftsAsync(Guid authorId)
+    public async Task<List<DraftDto>> GetAllDraftsAsync(int authorId)
     {
         var drafts = await _context.Drafts.ToListAsync();
         return drafts.Select(ToDto).ToList();
     }
 
-    public async Task<bool> UpdateDraftAsync(Guid id, DraftUpdateDto draftUpdateDto)
+    public async Task<bool> UpdateDraftAsync(int id, DraftUpdateDto draftUpdateDto)
     {
         var draft = await _context.Drafts.FindAsync(id);
         if (draft == null) return false;
@@ -61,7 +61,7 @@ public class DraftService : IDraftService
         return true;
     }
 
-    public async Task<bool> DeleteDraftAsync(Guid id)
+    public async Task<bool> DeleteDraftAsync(int id)
     {
         var draft = await _context.Drafts.FindAsync(id);
         if (draft == null) return false;

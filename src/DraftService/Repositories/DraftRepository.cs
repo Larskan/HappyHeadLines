@@ -21,7 +21,7 @@ public class DraftRepository : IDraftRepository
         return draft;
     }
 
-    public async Task<List<Draft>> GetAllDraftsAsync(Guid authorId) =>
+    public async Task<List<Draft>> GetAllDraftsAsync(int authorId) =>
         await _dbContext.Drafts.Where(d => d.AuthorId == authorId).ToListAsync();
 
 
@@ -39,7 +39,7 @@ public class DraftRepository : IDraftRepository
         return existingDraft;
     }
 
-    public async Task<bool> DeleteDraftAsync(Guid id)
+    public async Task<bool> DeleteDraftAsync(int id)
     {
         var draft = await _dbContext.Drafts.FindAsync(id);
         if (draft is null) return false;

@@ -58,3 +58,14 @@ DraftService: docker build -t happyheadlines/draft-service -f src/DraftService/D
 
 Run container: docker run -d -p 5001:8080 happyheadlines/draft-service - Gives a container name in the form of a long number.
 Check logs: docker logs number = Shows active apps
+
+// Current
+My connect is established with sql server, but then an error occurs when SQL server expects encryption and my Docker
+container doesnt trust the server certificate. It fails the handshake.
+
+Trying to add TrustServerCertificate=True to builder.Services.AddDbContext
+
+
+docker build -t happyheadlines/draft-service -f src/DraftService/Dockerfile .
+docker-compose up --build draft-service sqlserver
+docker run -d -p 5001:8080 happyheadlines/draft-service

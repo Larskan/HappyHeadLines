@@ -2,7 +2,6 @@ using ArticleService.Services;
 using ArticleService.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
-using System.IO.Compression;
 
 namespace ArticleService.Controllers;
 
