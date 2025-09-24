@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProfanityService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1418d74d432c18a63438a4583980bc204ca46a2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f0fb132c061a7b0878f9108293db7cd83bbaab6b")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProfanityService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProfanityService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
