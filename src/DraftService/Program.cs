@@ -7,6 +7,10 @@ using DraftService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // Logging attempt
 builder.Host.UseSerilog((ctx, lc) => lc
     .WriteTo.Console()
@@ -20,6 +24,7 @@ builder.Services.AddDbContext<DraftService.Data.DraftDbContext>(options => optio
 
 // Dependency Injection
 builder.Services.AddScoped<IDraftService, DraftService.Services.DraftService>();
+builder.Services.AddScoped<IDraftRepository, DraftService.Repositories.DraftRepository>();
 
 
 var app = builder.Build();

@@ -25,7 +25,7 @@ public class DraftService : IDraftService
             Id = Guid.NewGuid(),
             Title = draftCreateDto.Title,
             Body = draftCreateDto.Body,
-            Author = draftCreateDto.Author,
+            AuthorId = draftCreateDto.AuthorId,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
@@ -72,8 +72,8 @@ public class DraftService : IDraftService
     }
 
     private static DraftDto ToDto(Draft d) =>
-        new DraftDto(d.Id, d.Title, d.Body, d.Author, d.CreatedAt, d.UpdatedAt);
+        new DraftDto(d.Id, d.AuthorId, d.Title, d.Body,  d.CreatedAt, d.UpdatedAt);
     
     private static DraftCreateDto ToDtoCreate(Draft d) =>
-        new DraftCreateDto(d.Title, d.Body, d.Author);
+        new DraftCreateDto(d.Title, d.Body, d.AuthorId);
 }
