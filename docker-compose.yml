@@ -91,6 +91,12 @@ services:
     ports:
       - "8006:80"
 
+rabbitmq:
+  image: rabbitmq:3-management
+  ports:
+    - "5672:5672" #AMQP Protocol
+    - "15672:15672" #Management UI
+
 
 volumes:
   mssql-data:

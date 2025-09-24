@@ -19,6 +19,14 @@ The overall todo
 - Implement CommentCache using cache miss approach to fill cache. Limited to all comments from most recently 30 accessed articles, when its full, the LRU algorith is used to clean up the cache.
 - Use Redis, because I want to learn how to use it.
 
+Webapp: Publish an article.
+PublisherService: Handles the publishing of articles, sends to ArticleQueue.
+ArticleQueue: When an article is being published, the article enters the queue.
+NewsletterService: Sends out newsletters to subscribers.
+NewsletterService: Subscribes to ArticleQueue to receive the latest news first for immediate newsletter.
+NewsletterService: Requests articles from ArticleService for daily newsletter, ArticleService fetch/stores articles in ArtibleDB.
+ArticleService: Subscribes to ArticleQueue for the latest articles in order to persist them in a database.
+
 Rewriting of the architecture
 - Controller: The front desk, receives request, checks if valid and passes it to the right department.
 - Controller: Deals with HTTP: Routing, query/body passing, response codes. 
