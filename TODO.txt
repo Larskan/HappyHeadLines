@@ -1,0 +1,20 @@
+The overall todo
+- C4 Diagram - Done
+- C4 Diagram for all 4 levels - Do last
+- Implement ArticleService with CRUD and REST API and x-axis with 3 instances and load balancer.
+- Implement ArticleDatabase and y-axis so each continent has own DB + a global DB
+- Implement CommentService. Fault Isolated with swimlanes. Takes over if Profanity Fails
+- Implement CommentDatabase.
+- Implement ProfanityService. Fault Isolated with swimlanes
+- Implement ProfanityDatabase. 
+- Implement Draftservice with logging and tracing.
+- Implement DraftDatabase with logging and tracing.
+- Log and trace in central repo that is reuseable across entire architecture.
+- Add automatic cleaning of logs.
+- Implement PublisherService with focus on distributed tracing.
+- Implement NewsletterService with focus on distributed tracing.
+- Implement ArticleQueue
+- Implement ArticleCache using offline process to periodically fill cache with articles from latest 14 days.
+- Implement CommentCache using cache miss approach to fill cache. Limited to all comments from most recently 30 accessed articles, when its full, the LRU algorith is used to clean up the cache.
+- Use Redis, because I want to learn how to use it.
+
