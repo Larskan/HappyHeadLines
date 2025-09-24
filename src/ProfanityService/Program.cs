@@ -13,8 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-builder.Services.AddDbContext<ProfanityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// DB
+var dbName = builder.Configuration["DATABASE_NAME"] ?? "ProfanityDb";
+// Allows the service to use its own database.
+builder.Services.AddDbContext<ProfanityDbContext>(options => options.UseSqlServer($"Server=sqlserver,1433;Database={dbName};User Id=sa;Password={builder.Configuration["SA_PASSWORD"]};"));
 
 // Dependency Injection
 builder.Services.AddScoped<IProfanityRepository, ProfanityRepository>();
