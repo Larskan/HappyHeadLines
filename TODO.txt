@@ -18,3 +18,21 @@ The overall todo
 - Implement CommentCache using cache miss approach to fill cache. Limited to all comments from most recently 30 accessed articles, when its full, the LRU algorith is used to clean up the cache.
 - Use Redis, because I want to learn how to use it.
 
+Rewriting of the architecture
+- Controller: The front desk, receives request, checks if valid and passes it to the right department.
+- Controller: Deals with HTTP: Routing, query/body passing, response codes. 
+- Controller: If client calls Post Articles, controller takes the ArticleDto from the body and gives it to the service.
+- Service: The Manager, knows how to get work done, doesnt talk to DB directly, delegates to repo.
+- Service: Business logic: rules, orchestration, validation.
+- Service: Examples: Validate that title isnt empty, set timestamps, ask repo to save article, publish event to Rabbit.
+- Repository: Filing Clerk, doesnt decide what should be saved, just saves what its told to save.
+- Repository: Handles data persistence: EF Core, SQL query, database selection.
+- Repository: Examples: Service says "store this in EU", repo picks the right DB Connection(via DB Selector) and executes EF Core operation.
+- Interface: Job Descriptions, like if you are an IArticleRepo, you MUST be able to do bla bla bla.
+- Interface: Provides contracts between layers for flexibility, testability and maintainability.
+- Interface: Notes: Easier to replace EF Core should it be necessary, can mock them in testing.
+
+Communication:
+- Controller: "Hey Lars, I got a request for Europe"
+- Service: "Cool, let me validate and prepare the article"
+- Repo: "Okay, I will save it in Europes DB"
