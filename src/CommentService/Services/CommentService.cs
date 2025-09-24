@@ -23,6 +23,7 @@ public class CommentService : ICommentService
         try
         {
             var response = await _profanityClient.PostAsJsonAsync("/filter", new { text = commentDto.Body });
+            // If the ProfanityService is available and returns success, use the filtered text
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<ProfanityDto>();
@@ -31,6 +32,7 @@ public class CommentService : ICommentService
         }
         catch (Exception ex)
         {
+            // If ProfanityService is down or fails, log the error and proceed with unfiltered text
             Console.WriteLine($"[WARN] ProfanityService unavailable: {ex.Message}");
         }
 
@@ -40,6 +42,7 @@ public class CommentService : ICommentService
             ArticleId = articleId,
             Author = commentDto.Author,
             Body = filteredText,
+            IsFiltered = filteredText != commentDto.Body, // False if profanity check failed
             CreatedAt = DateTime.UtcNow
         };
 

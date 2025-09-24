@@ -2,7 +2,6 @@ using Shared;
 using Microsoft.EntityFrameworkCore;
 using Polly;
 using CommentService.Data;
-using CommentService.Models;
 using CommentService.Interfaces;
 using CommentService.Repositories;
 
@@ -20,6 +19,8 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ICommentService, CommentService.Services.CommentService>();
 
 // If ProfanityService fails, CommentService stops calling it temporarily, but can continue to store raw comments or provide fallback logic
+// If 2 consecutive calls fail, the circuit breaker will stop calls for 15 seconds. 
+// Then allow one call to test if the service is back up..otherwise the circuit breaker goes back to "open" state
 builder.Services.AddHttpClient("Profanity", client =>
 {
     client.BaseAddress = new Uri("http://profanity-service:80");
