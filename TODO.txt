@@ -8,16 +8,36 @@ The overall todo
 - Implement ProfanityService. Fault Isolated with swimlanes - Done
 - Implement ProfanityDatabase.  - Done
 ---------------------------------------------
-- Implement Draftservice with logging and tracing.
-- Implement DraftDatabase with logging and tracing.
-- Log and trace in central repo that is reuseable across entire architecture.
-- Add automatic cleaning of logs.
-- Implement PublisherService with focus on distributed tracing.
-- Implement NewsletterService with focus on distributed tracing.
-- Implement ArticleQueue
-- Implement ArticleCache using offline process to periodically fill cache with articles from latest 14 days.
-- Implement CommentCache using cache miss approach to fill cache. Limited to all comments from most recently 30 accessed articles, when its full, the LRU algorith is used to clean up the cache.
-- Use Redis, because I want to learn how to use it.
+- Implement Draftservice with logging and tracing. - In progress
+- Implement DraftDatabase with logging and tracing. - In progress
+- Log and trace in central repo that is reuseable across entire architecture. - Not started
+- Add automatic cleaning of logs. - Not started
+- Implement PublisherService with focus on distributed tracing. - In progress
+- Implement NewsletterService with focus on distributed tracing. - In progress
+- Implement ArticleQueue - Needs to be tested
+- Implement ArticleCache using offline process to periodically fill cache with articles from latest 14 days. - Not started
+- Implement CommentCache using cache miss approach to fill cache.  - Not started
+  * Limited to all comments from most recently 30 accessed articles, when its full, the LRU algorith is used to clean up the cache.
+- Use Redis, because I want to learn how to use it. - Not started
+
+Commands
+- docker-compose up -d = Makes sure docker compose grabs the environment.
+- docker exec -it <sqlserver-container-name> /opt/mssql-tools/bin/sqlcmd \ -S localhost -U sa -P $SA_PASSWORD = To see the Db running
+- Select Name From sys.Databases; = List DB.
+- docker build -t happyheadlines/article-service -f src/ArticleService/Dockerfile . = run ArticleService in root.
+- docker build -t happyheadlines/comment-service -f src/CommentService/Dockerfile . = run CommentService in root.
+- docker build -t happyheadlines/profanity-service -f src/ProfanityService/Dockerfile . = run ProfanityService in root.
+- docker build -t happyheadlines/draft-service -f src/DraftService/Dockerfile . = run DraftService in root.
+- docker build -t happyheadlines/publisher-service -f src/PublisherService/Dockerfile . = run PublisherService in root.
+- docker build -t happyheadlines/newsletter-service -f src/NewsletterService/Dockerfile . = run NewsletterService in root.
+- docker build -t happyheadlines/subscriber-service -f src/SubscriberService/Dockerfile . = run SubscriberService in root.
+- docker run -d -p 5001:8080 happyheadlines/draft-service = to be run after docker build
+- docker-compose up --build = Runs the entire docker compose, aka if 1 service doesnt work, this wont launch.
+- docker-compose up --build draft-service sqlserver = Runs the draft service through docker compose file and sqlserver.
+- docker-compose down = Disables the entire docker compose file.
+- docker logs containername = Shows the trace and error logs.
+- docker stop containername = Stop a container.
+- netstat -ano | findstr :8001 = To see if anything runs on 8001 port.
 
 Webapp: Publish an article.
 PublisherService: Handles the publishing of articles, sends to ArticleQueue.
@@ -41,16 +61,7 @@ Rewriting of the architecture
 - Interface: Provides contracts between layers for flexibility, testability and maintainability.
 - Interface: Notes: Easier to replace EF Core should it be necessary, can mock them in testing.
 
-Communication:
-- Controller: "Hey Lars, I got a request for Europe"
-- Service: "Cool, let me validate and prepare the article"
-- Repo: "Okay, I will save it in Europes DB"
-- Interface: "I am just watching, ignore me"
 
-
-To see my DB running after docker-compose up -d:
-- docker exec -it <sqlserver-container-name> /opt/mssql-tools/bin/sqlcmd \ -S localhost -U sa -P $SA_PASSWORD
-- List DB: SELECT Name FROM sys.Databases;
 
 logging
 - Trace: Entering/exiting methods, payloads, EF Core Queries(Debugging)
@@ -67,11 +78,40 @@ DraftService: docker build -t happyheadlines/draft-service -f src/DraftService/D
 Run container: docker run -d -p 5001:8080 happyheadlines/draft-service - Gives a container name in the form of a long number.
 Check logs: docker logs number = Shows active apps
 
-// Current
-My connect is established with sql server, but then an error occurs when SQL server expects encryption and my Docker
-container doesnt trust the server certificate. It fails the handshake.
+// Current ArticleService
+Communication with Docker works.
 
-Trying to add TrustServerCertificate=True to builder.Services.AddDbContext
+// Current CommentService
+Communication with Docker works.
+
+// Current ProfanityService
+Communication with Docker works.
+CircuitBreaker, if it fails, CommentService takes over.
+
+// Current DraftService
+Communication with Docker works.
+Communication with Swagger works.
+May need some dummy data to properly test. It struggles with Posting.
+Logging and tracing has been started, need to finish and test.
+
+// PublisherService
+Setup is completed, missing docker test.
+
+// NewsletterService
+Setup is completed, missing docker test.
+Contains the ArticleQueue - Consider moving this to Shared so both NewsletterService and SubscriberService can access it.
+
+// SubscriberService
+Setup is completed, missing docker test.
+
+// Shared
+Contains the DTOs
+Contains the RabbitHelper
+Need to add a Central Repo for logging and tracing, and fallbacks incase it breaks
+Need to add ArticleCache, consider if it should be Shared or within one of the services.
+Need to add CommentCache, consider if it should be Shared or within one of the services.
+
+
 
 
 docker build -t happyheadlines/draft-service -f src/DraftService/Dockerfile .
