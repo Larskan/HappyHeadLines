@@ -16,6 +16,7 @@ app.UseSwaggerUI();
 app.MapPost("/articles", async (ArticleDto dto, HttpContext ctx) =>
 {
     var continent = ctx.Request.Headers["X-Continent"].ToString();
+    // Select the appropriate database based on the continent header
     using var db = DatabaseSelector.GetDbContext(app.Services, continent);
     var article = new Article
     {
@@ -34,6 +35,7 @@ app.MapPost("/articles", async (ArticleDto dto, HttpContext ctx) =>
 app.MapGet("/articles/{id}", async (Guid id, HttpContext ctx) =>
 {
     var continent = ctx.Request.Headers["X-Continent"].ToString();
+    // Select the appropriate database based on the continent header
     using var db = DatabaseSelector.GetDbContext(app.Services, continent);
     var article = await db.Articles.FindAsync(id);
     return article is not null ? Results.Ok(article) : Results.NotFound();
@@ -43,9 +45,12 @@ app.MapGet("/articles/{id}", async (Guid id, HttpContext ctx) =>
 app.MapPut("/articles/{id}", async (Guid id, ArticleDto dto, HttpContext ctx) =>
 {
     var continent = ctx.Request.Headers["X-Continent"].ToString();
+    // Select the appropriate database based on the continent header
     using var db = DatabaseSelector.GetDbContext(app.Services, continent);
     var article = await db.Articles.FindAsync(id);
-    if (article is null) return Results.NotFound();
+
+    if (article is null) return Results.NotFound(); // 404 if not found
+
     article.Title = dto.Title;
     article.Body = dto.Body;
     article.Author = dto.Author;
@@ -59,9 +64,12 @@ app.MapPut("/articles/{id}", async (Guid id, ArticleDto dto, HttpContext ctx) =>
 app.MapDelete("/articles/{id}", async (Guid id, HttpContext ctx) =>
 {
     var continent = ctx.Request.Headers["X-Continent"].ToString();
+    // Select the appropriate database based on the continent header
     using var db = DatabaseSelector.GetDbContext(app.Services, continent);
     var article = await db.Articles.FindAsync(id);
-    if (article is null) return Results.NotFound();
+
+    if (article is null) return Results.NotFound(); // 404 if not found
+
     db.Articles.Remove(article);
     await db.SaveChangesAsync();
     return Results.NoContent();

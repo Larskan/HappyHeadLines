@@ -17,17 +17,17 @@ builder.Services.AddHttpClient("Profanity", client =>
 }).AddTransientHttpErrorPolicy(policy => policy.CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 2, durationOfBreak: TimeSpan.FromSeconds(15)));
 var app = builder.Build();
 
-app.MapPost("/articles/{id}/comments", async (int articleId, CommentDto dto, CommentDb db, IHttpClientFactory httpClientFactory) =>
+app.MapPost("/articles/{articleId}/comments", async (int articleId, CommentDto dto, CommentDb db, IHttpClientFactory httpClientFactory) =>
 {
 
     var client = httpClientFactory.CreateClient("Profanity");
-    string filteredText = dto.Text;
+    string filteredText = dto.Body;
     try
     {
-        var response = await client.PostAsJsonAsync("/filter", new { text = dto.Text });
+        var response = await client.PostAsJsonAsync("/filter", new { text = dto.Body });
         if (response.IsSuccessStatusCode)
         {
-            var result = await response.Content.ReadFromJsonAsync<FilteredDto>();
+            var result = await response.Content.ReadFromJsonAsync<ProfanityDto>();
             filteredText = result!.Filtered;
         }
     }
@@ -43,7 +43,7 @@ app.MapPost("/articles/{id}/comments", async (int articleId, CommentDto dto, Com
     return Results.Created($"/articles/{articleId}/comments/{comment.Id}", comment);
 });
 
-app.MapGet("/articles/{id}/comments", async (int articleId, CommentDb db) =>
+app.MapGet("/articles/{articleId}/comments", async (int articleId, CommentDb db) =>
 {
     return await db.Comments.Where(c => c.ArticleId == articleId).ToListAsync();
 });
@@ -53,6 +53,3 @@ app.Run();
 // Note: Should call ProfanityService /filter to filter comments before saving to DB
 // Note: Stores commentDatabase via EF Core
 // Note: Expose GET /Articles/{id}/comments to get comments for an article
-
-public record CommentDto(string Text);
-public record FilteredDto(string Filtered);
