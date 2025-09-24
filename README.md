@@ -4,7 +4,11 @@
 
 # Technologies used
 VS Code IDE
+
 Microsoft SQL
+
 Docker
+
 GitHub
+
 ASP.NET Core + EF Core.
