@@ -1,4 +1,4 @@
-namespace NewsletterService.Models;
+namespace SubscriberService.Models;
 
 public class Subscriber
 {

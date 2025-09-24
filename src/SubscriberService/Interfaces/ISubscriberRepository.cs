@@ -1,6 +1,6 @@
-using NewsletterService.Models;
+using SubscriberService.Models;
 
-namespace NewsletterService.Interfaces;
+namespace SubscriberService.Interfaces;
 
 public interface ISubscriberRepository
 {

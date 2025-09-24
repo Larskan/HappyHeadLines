@@ -7,7 +7,6 @@ public class NewsletterDbContext : DbContext
 {
     public NewsletterDbContext(DbContextOptions<NewsletterDbContext> options) : base(options) { }
 
-    public DbSet<Subscriber> Subscribers => Set<Subscriber>();
     public DbSet<NewsletterArticle> Articles => Set<NewsletterArticle>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

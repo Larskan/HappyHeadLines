@@ -1,14 +1,14 @@
-using NewsletterService.Data;
-using NewsletterService.Models;
-using NewsletterService.Interfaces;
+using SubscriberService.Data;
+using SubscriberService.Models;
+using SubscriberService.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace NewsletterService.Repositories;
+namespace SubscriberService.Repositories;
 
 public class SubscriberRepository : ISubscriberRepository
 {
-    private readonly NewsletterDbContext _context;
-    public SubscriberRepository(NewsletterDbContext context) => _context = context;
+    private readonly SubscriberDbContext _context;
+    public SubscriberRepository(SubscriberDbContext context) => _context = context;
 
     public async Task<Subscriber> AddSubscriberAsync(Subscriber subscriber)
     {
