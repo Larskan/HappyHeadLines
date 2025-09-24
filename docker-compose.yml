@@ -1,4 +1,4 @@
-version: "3.9"
+
 services:
   # ---------- SQL Server ----------
   # run: docker-compose up -d (to auto load .env file)
