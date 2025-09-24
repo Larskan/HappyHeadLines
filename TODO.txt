@@ -52,3 +52,6 @@ logging
 - Critical: Service crash, DB down, unrecoverable errors.
 - Note: Dont log passwords and sensitive data.
 - Auto cleaning?: Central Log Aggregator(Elasticsearch, Seq, Splunk), Rolling file logs(Serilog)
+
+Running a Service in root: 
+DraftService: docker build -t happyheadlines/draft-service -f src/DraftService/Dockerfile .

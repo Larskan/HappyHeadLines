@@ -42,7 +42,7 @@ public class DraftService : IDraftService
         return draft == null ? null : ToDto(draft);
     }
 
-    public async Task<List<DraftDto>> GetAllDraftsAsync(string Author)
+    public async Task<List<DraftDto>> GetAllDraftsAsync(Guid authorId)
     {
         var drafts = await _context.Drafts.ToListAsync();
         return drafts.Select(ToDto).ToList();
