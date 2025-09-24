@@ -1,8 +1,7 @@
 using Serilog;
 using Microsoft.EntityFrameworkCore;
-using Shared;
 using DraftService.Interfaces;
-using DraftService.Services;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +28,9 @@ builder.Services.AddScoped<IDraftRepository, DraftService.Repositories.DraftRepo
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.MapControllers();
 
 app.Run();

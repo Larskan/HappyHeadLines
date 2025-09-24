@@ -55,3 +55,6 @@ logging
 
 Running a Service in root: 
 DraftService: docker build -t happyheadlines/draft-service -f src/DraftService/Dockerfile .
+
+Run container: docker run -d -p 5001:8080 happyheadlines/draft-service - Gives a container name in the form of a long number.
+Check logs: docker logs number = Shows active apps
