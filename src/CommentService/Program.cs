@@ -12,7 +12,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // DB
-builder.Services.AddDbContext<CommentDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+var dbName = builder.Configuration["DATABASE_NAME"] ?? "CommentDb";
+// Allows the service to use its own database.
+builder.Services.AddDbContext<CommentDbContext>(options => options.UseSqlServer($"Server=sqlserver,1433;Database={dbName};User Id=sa;Password={builder.Configuration["SA_PASSWORD"]};"));
 
 // Dependency Injection
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();

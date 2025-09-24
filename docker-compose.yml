@@ -17,6 +17,8 @@ services:
     image: happyheadlines/article-service
     depends_on:
       - sqlserver
+    environment:
+      DATABASE_NAME: ${ARTICLE_DB}
     deploy:
       replicas: 3
     ports:
@@ -27,6 +29,8 @@ services:
     image: happyheadlines/draft-service
     depends_on:
       - sqlserver
+    environment:
+      DATABASE_NAME: ${DRAFT_DB}
     ports:
       - "8001:80"
 
@@ -34,6 +38,8 @@ services:
     image: happyheadlines/publisher-service
     depends_on:
       - sqlserver
+    environment:
+      DATABASE_NAME: ${PUBLISHER_DB}
     ports:
       - "8002:80"
   comment-service:
@@ -41,12 +47,16 @@ services:
     depends_on:
       - sqlserver
       - profanity-service
+    environment:
+      DATABASE_NAME: ${COMMENT_DB}
     ports:
       - "8003:80"
   subscriber-service:
     image: happyheadlines/subscriber-service
     depends_on:
       - sqlserver
+    environment:
+      DATABASE_NAME: ${SUBSCRIBER_DB}
     ports:
       - "8004:80"
   
@@ -54,6 +64,8 @@ services:
     image: happyheadlines/profanity-service
     depends_on:
       - sqlserver
+    environment:
+      DATABASE_NAME: ${PROFANITY_DB}
     ports:
       - "8005:80"
 
@@ -61,6 +73,8 @@ services:
     image: happyheadlines/newsletter-service
     depends_on:
       - sqlserver
+    environment:
+      DATABASE_NAME: ${NEWSLETTER_DB}
     ports:
       - "8006:80"
 

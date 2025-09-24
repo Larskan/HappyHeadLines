@@ -37,3 +37,8 @@ Communication:
 - Service: "Cool, let me validate and prepare the article"
 - Repo: "Okay, I will save it in Europes DB"
 - Interface: "I am just watching, ignore me"
+
+
+To see my DB running after docker-compose up -d:
+- docker exec -it <sqlserver-container-name> /opt/mssql-tools/bin/sqlcmd \ -S localhost -U sa -P $SA_PASSWORD
+- List DB: SELECT Name FROM sys.Databases;
