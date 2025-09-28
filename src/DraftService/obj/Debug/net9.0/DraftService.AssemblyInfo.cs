@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DraftService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6919fbf66ae051cdc755e24ad1cdfa2cfb0c64af")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c3a90c2a7fcabb443030e9297a1116ca5388135a")]
 [assembly: System.Reflection.AssemblyProductAttribute("DraftService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DraftService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
