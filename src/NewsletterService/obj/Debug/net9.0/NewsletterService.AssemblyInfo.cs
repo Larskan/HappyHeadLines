@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NewsletterService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c3a90c2a7fcabb443030e9297a1116ca5388135a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5b495648e17854fe89c01692c62b9d07cb0cc2f9")]
 [assembly: System.Reflection.AssemblyProductAttribute("NewsletterService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NewsletterService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

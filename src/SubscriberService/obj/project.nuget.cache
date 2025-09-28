@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "tNE+ViGJmaQ=",
+  "dgSpecHash": "75E2Sd/VkGk=",
   "success": true,
   "projectFilePath": "C:\\Users\\Bruger\\VSCode\\HappyHeadLines\\src\\SubscriberService\\SubscriberService.csproj",
   "expectedPackageFiles": [
@@ -71,6 +71,7 @@
     "C:\\Users\\Bruger\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\npgsql\\9.0.3\\npgsql.9.0.3.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\9.0.4\\npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512",
+    "C:\\Users\\Bruger\\.nuget\\packages\\nredisstack\\1.1.1\\nredisstack.1.1.1.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\opentelemetry\\1.12.0\\opentelemetry.1.12.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\opentelemetry.api\\1.12.0\\opentelemetry.api.1.12.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\opentelemetry.api.providerbuilderextensions\\1.12.0\\opentelemetry.api.providerbuilderextensions.1.12.0.nupkg.sha512",
@@ -81,6 +82,7 @@
     "C:\\Users\\Bruger\\.nuget\\packages\\opentelemetry.instrumentation.entityframeworkcore\\1.12.0-beta.2\\opentelemetry.instrumentation.entityframeworkcore.1.12.0-beta.2.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\opentelemetry.instrumentation.http\\1.12.0\\opentelemetry.instrumentation.http.1.12.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\opentelemetry.instrumentation.sqlclient\\1.12.0-beta.3\\opentelemetry.instrumentation.sqlclient.1.12.0-beta.3.nupkg.sha512",
+    "C:\\Users\\Bruger\\.nuget\\packages\\pipelines.sockets.unofficial\\2.2.8\\pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\rabbitmq.client\\7.1.2\\rabbitmq.client.7.1.2.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\serilog.aspnetcore\\9.0.0\\serilog.aspnetcore.9.0.0.nupkg.sha512",
@@ -91,6 +93,7 @@
     "C:\\Users\\Bruger\\.nuget\\packages\\serilog.sinks.console\\6.0.0\\serilog.sinks.console.6.0.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\serilog.sinks.debug\\3.0.0\\serilog.sinks.debug.3.0.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\serilog.sinks.file\\6.0.0\\serilog.sinks.file.6.0.0.nupkg.sha512",
+    "C:\\Users\\Bruger\\.nuget\\packages\\stackexchange.redis\\2.9.17\\stackexchange.redis.2.9.17.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\system.clientmodel\\1.0.0\\system.clientmodel.1.0.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\system.codedom\\6.0.0\\system.codedom.6.0.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\system.collections.immutable\\7.0.0\\system.collections.immutable.7.0.0.nupkg.sha512",

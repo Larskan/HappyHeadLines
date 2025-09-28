@@ -102,6 +102,14 @@ services:
     image: openzipkin/zipkin
     ports:
       - "9411:9411" # Zipkin ui at http://localhost:9411
+  
+# ----- REDIS -----
+  redis:
+    image: redis:7
+    ports: 
+      - "6379:6379"
+      # maxmemory keeps redis bounded. allkeys-lru ensures oldest unused keys are evicted automatically
+    command: ["redis-server", "--maxmemory", "100mb", "--maxmemory-policy", "allkeys-lru"]
 
 
 volumes:
