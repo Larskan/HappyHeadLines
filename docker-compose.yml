@@ -90,12 +90,18 @@ services:
       SA_PASSWORD: ${SA_PASSWORD}
     ports:
       - "8006:80"
+# ------- RABBITMQ ---------
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672" #AMQP Protocol
+      - "15672:15672" #Management UI
 
-rabbitmq:
-  image: rabbitmq:3-management
-  ports:
-    - "5672:5672" #AMQP Protocol
-    - "15672:15672" #Management UI
+# -------- Zipkin -------
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411" # Zipkin ui at http://localhost:9411
 
 
 volumes:

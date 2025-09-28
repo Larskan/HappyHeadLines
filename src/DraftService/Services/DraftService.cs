@@ -12,10 +12,12 @@ namespace DraftService.Services;
 public class DraftService : IDraftService
 {
     private readonly DraftDbContext _context;
+    private readonly ILogger<DraftService> _logger;
 
-    public DraftService(DraftDbContext context)
+    public DraftService(DraftDbContext context, ILogger<DraftService> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<DraftCreateDto> CreateDraftAsync(DraftCreateDto draftCreateDto)
@@ -32,6 +34,8 @@ public class DraftService : IDraftService
 
         _context.Drafts.Add(draft);
         await _context.SaveChangesAsync();
+
+        _logger.LogInformation("Created draft {@Draft}", draft);
 
         return ToDtoCreate(draft);
     }
