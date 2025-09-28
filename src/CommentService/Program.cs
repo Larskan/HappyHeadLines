@@ -4,6 +4,8 @@ using Polly;
 using CommentService.Data;
 using CommentService.Interfaces;
 using CommentService.Repositories;
+using StackExchange.Redis;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,10 @@ builder.Services.AddSwaggerGen();
 var dbName = builder.Configuration["DATABASE_NAME"] ?? "CommentDb";
 // Allows the service to use its own database.
 builder.Services.AddDbContext<CommentDbContext>(options => options.UseSqlServer($"Server=sqlserver,1433;Database={dbName};User Id=sa;Password={builder.Configuration["SA_PASSWORD"]};"));
+
+// Add Redis
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect("redis:6379"));
+builder.Services.AddSingleton<RedisHelper>();
 
 // Dependency Injection
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
