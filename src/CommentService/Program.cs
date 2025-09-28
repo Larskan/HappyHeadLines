@@ -22,6 +22,9 @@ builder.Services.AddDbContext<CommentDbContext>(options => options.UseSqlServer(
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect("redis:6379"));
 builder.Services.AddSingleton<RedisHelper>();
 
+// Adding CommentCache
+builder.Services.AddSingleton<CommentCache>();
+
 // Dependency Injection
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ICommentService, CommentService.Services.CommentService>();

@@ -92,14 +92,15 @@ CircuitBreaker, if it fails, CommentService takes over.
 Communication with Docker works.
 Communication with Swagger works.
 May need some dummy data to properly test. It struggles with Posting.
-Logging and tracing has been started, need to finish and test.
+Logging and tracing has been finished, need to test.
 
 // PublisherService
 Setup is completed, missing docker test.
+Added Distributed tracing
 
 // NewsletterService
 Setup is completed, missing docker test.
-Contains the ArticleQueue - Consider moving this to Shared so both NewsletterService and SubscriberService can access it.
+Added Distributed tracing.
 
 // SubscriberService
 Setup is completed, missing docker test.
@@ -107,7 +108,8 @@ Setup is completed, missing docker test.
 // Shared
 Contains the DTOs
 Contains the RabbitHelper
-Need to add a Central Repo for logging and tracing, and fallbacks incase it breaks
+Contains RedisHelper
+Contains LoggingHelper
 Need to add ArticleCache, consider if it should be Shared or within one of the services.
 Need to add CommentCache, consider if it should be Shared or within one of the services.
 

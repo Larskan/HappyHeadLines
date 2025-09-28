@@ -35,7 +35,7 @@ public class ArticleRepository(IServiceProvider services, RedisHelper redis) : I
         db.Articles.Add(article);
         await db.SaveChangesAsync();
 
-        var key = $"article:{continent}:{article.Id}"; 
+        var key = $"article:{continent}:{article.Id}";
         await _redis.SetAsync(key, article, TimeSpan.FromDays(14));
         return article;
     }
@@ -46,7 +46,7 @@ public class ArticleRepository(IServiceProvider services, RedisHelper redis) : I
         db.Articles.Update(article);
         await db.SaveChangesAsync();
 
-        var key = $"article:{continent}:{article.Id}"; 
+        var key = $"article:{continent}:{article.Id}";
         await _redis.SetAsync(key, article, TimeSpan.FromDays(14));
         return true;
     }
@@ -65,5 +65,11 @@ public class ArticleRepository(IServiceProvider services, RedisHelper redis) : I
             await _redis.RemoveAsync(key);
         }
         return deleted;
+    }
+
+    public async Task<List<Article>> GetArticlesSinceAsync(DateTime since)
+    {
+        using var db = Helpers.DatabaseSelector.GetDbContext(_services, "global");
+        return await db.Articles.Where(a => a.PublishedAt >= since).ToListAsync();
     }
 }

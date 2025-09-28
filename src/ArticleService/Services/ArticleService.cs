@@ -1,5 +1,6 @@
 using ArticleService.Models;
 using ArticleService.Repositories;
+using ArticleService.Helpers;
 using ArticleService.Interfaces;
 using Shared;
 
@@ -8,16 +9,25 @@ namespace ArticleService.Services;
 public class ArticleService : IArticleService
 {
     private readonly IArticleRepository _repository;
+    private readonly ArticleCache _cache;
 
-    public ArticleService(IArticleRepository repository)
+    public ArticleService(IArticleRepository repository, ArticleCache cache)
     {
         _repository = repository;
+        _cache = cache;
     }
 
+    // Cache can store full article, but service still returns correct DTO
     public async Task<ArticleDto?> GetByIdAsync(Guid id, string continent)
     {
+        // Try cache first
+        var cached = await _cache.GetAsync(id);
+        if (cached != null) return ToDto(cached);
+
+        // fallback to DB
         var article = await _repository.GetByIdAsync(id, continent);
-        return article is null ? null : ToDto(article);
+        if (article == null) return null;
+        return ToDto(article);
     }
     public async Task<List<ArticleDto>> GetAllAsync(string continent)
     {

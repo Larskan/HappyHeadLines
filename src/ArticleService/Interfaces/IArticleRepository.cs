@@ -10,4 +10,5 @@ public interface IArticleRepository
     Task<Article> CreateArticleAsync(Article article, string continent);
     Task<bool> UpdateArticleAsync(Article article, string continent);
     Task<bool> DeleteArticleAsync(Guid id, string continent);
+    Task<List<Article>> GetArticlesSinceAsync(DateTime since);
 }

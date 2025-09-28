@@ -2,6 +2,7 @@ using ArticleService.Repositories;
 using ArticleService.Interfaces;
 using StackExchange.Redis;
 using Shared;
+using ArticleService.Helpers;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,8 @@ builder.Services.AddScoped<IArticleService, ArticleService.Services.ArticleServi
 // Add Redis
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect("redis:6379"));
 builder.Services.AddSingleton<RedisHelper>();
+builder.Services.AddSingleton<ArticleCache>();
+builder.Services.AddHostedService(sp => sp.GetRequiredService<ArticleCache>());
 
 var app = builder.Build();
 app.UseSwagger();
