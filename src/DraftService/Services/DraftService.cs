@@ -24,7 +24,6 @@ public class DraftService : IDraftService
     {
         var draft = new Draft
         {
-            Id = draftCreateDto.AuthorId,
             Title = draftCreateDto.Title,
             Body = draftCreateDto.Body,
             AuthorId = draftCreateDto.AuthorId,
