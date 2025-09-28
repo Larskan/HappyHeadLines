@@ -4,6 +4,7 @@ using NewsletterService.Repositories;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Shared;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 
@@ -13,57 +14,73 @@ public class ArticleQueueSubscriber : BackgroundService
 {
     private readonly IConnection _rabbitConnection;
     private readonly INewsArticleRepository _newsArticleRepo;
+    private readonly ILogger<ArticleQueueSubscriber> _logger;
+    private static readonly ActivitySource activitySource = new("NewsletterService");
 
-    public ArticleQueueSubscriber(IConnection rabbitConnection, INewsArticleRepository newsArticleRepository)
+    public ArticleQueueSubscriber(IConnection rabbitConnection, INewsArticleRepository newsArticleRepository, ILogger<ArticleQueueSubscriber> logger)
     {
         _rabbitConnection = rabbitConnection;
         _newsArticleRepo = newsArticleRepository;
+        _logger = logger;
     }
 
     protected override async Task ExecuteAsync(CancellationToken ct)
     {
-        await using var channel = await _rabbitConnection.CreateChannelAsync(cancellationToken: ct);
+        using var channel = await _rabbitConnection.CreateChannelAsync(cancellationToken: ct);
         await channel.ExchangeDeclareAsync(exchange: "article_exchange", type: ExchangeType.Fanout, durable: true, cancellationToken: ct);
+        var queue = await channel.QueueDeclareAsync(cancellationToken: ct);
+        await channel.QueueBindAsync(queue.QueueName, "article_exchange", "", cancellationToken: ct);
 
         // Declare a queue and get its name
-        var queueDeclare = await channel.QueueDeclareAsync(
-            queue: "", //Empty means RabbitMQ generates one.
-            durable: true,
-            exclusive: false,
-            autoDelete: false,
-            arguments: null,
-            cancellationToken: ct
-        );
-        var queueName = queueDeclare.QueueName;
+        // var queueDeclare = await channel.QueueDeclareAsync(
+        //     queue: "", //Empty means RabbitMQ generates one.
+        //     durable: true,
+        //     exclusive: false,
+        //     autoDelete: false,
+        //     arguments: null,
+        //     cancellationToken: ct
+        // );
+        // var queueName = queueDeclare.QueueName;
 
-        await channel.QueueBindAsync(
-            queue: queueName,
-            exchange: "article_exchange",
-            routingKey: "",
-            cancellationToken: ct
-        );
+        // await channel.QueueBindAsync(
+        //     queue: queueName,
+        //     exchange: "article_exchange",
+        //     routingKey: "",
+        //     cancellationToken: ct
+        // );
 
         var consumer = new AsyncEventingBasicConsumer(channel);
         consumer.ReceivedAsync += async (sender, args) =>
         {
+            // Span is created for each consumed message.
+            // Each is tagged with article.id, article.authorId and messaging.system=rabbitmq
+            using var activity = activitySource.StartActivity("ConsumeArticle");
             try
             {
                 var body = args.Body.ToArray();
-                var article = JsonSerializer.Deserialize<NewsletterArticle>(Encoding.UTF8.GetString(body));
-                if (article != null) await _newsArticleRepo.AddArticleAsync(article);
+                var article = JsonSerializer.Deserialize<NewsletterArticle>(Encoding.UTF8.GetString(body)!);
+                _logger.LogInformation("Received article {Title} from Author {AuthorId}", article?.Title, article?.AuthorId);
 
-                await channel.BasicAckAsync(args.DeliveryTag, multiple: false, cancellationToken: ct);
+                activity?.AddTag("messaging.system", "rabbitmq");
+                activity?.AddTag("article.id", article?.Id.ToString());
+                activity?.AddTag("article.authorId", article?.AuthorId);
+
+                if (article != null) await _newsArticleRepo.AddArticleAsync(article);
+                _logger.LogInformation("Saved article {ArticleId} to NewsletterDb", article?.Id);
+
+                await channel.BasicAckAsync(args.DeliveryTag, multiple: false);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error processing message: {ex.Message}");
+                // If processing fails, error log and requeue.
+                _logger.LogError(ex, "Failed to process article message");
+                await channel.BasicNackAsync(args.DeliveryTag, false, requeue: true);
             }
         };
         await channel.BasicConsumeAsync(
-            queue: queueName,
+            queue: queue.QueueName,
             autoAck: false,
-            consumer: consumer,
-            cancellationToken: ct
+            consumer: consumer
         );
         await Task.Delay(-1, ct);
     }

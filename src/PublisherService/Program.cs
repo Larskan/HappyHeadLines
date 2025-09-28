@@ -4,33 +4,43 @@ using System.Text;
 using System.Text.Json;
 using Shared;
 using RabbitMQ.Client;
+using PublisherService.Data;
+using Microsoft.EntityFrameworkCore;
+using PublisherService.Interfaces;
+using PublisherService.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddEnvironmentVariables();
+
+// Central logging and tracing
+builder.Host.UseCentralLogging("PublisherService");
+builder.Services.AddCentralTracing("PublisherService");
+
+// Controllers and swagger
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// DB
+var dbName = builder.Configuration["DATABASE_NAME"] ?? "PublisherDb";
+builder.Services.AddDbContext<PublisherDbContext>(options => options.UseSqlServer($"Server=sqlserver,1433;Database={dbName};User Id=sa;Password={builder.Configuration["SA_PASSWORD"]};TrustServerCertificate=True"));
+
+// Rabbitmq connection singleton
+builder.Services.AddSingleton(sp =>
+{
+    var factory = new ConnectionFactory { HostName = "rabbitmq" };
+    return (IConnection)factory.CreateConnectionAsync();
+});
+
+//Dependency Injection
+builder.Services.AddScoped<IPublishArticleRepository, PublishArticleRepository>();
+
 var app = builder.Build();
 
-app.MapPost("/publish", async (PublishRequest request) =>
-{
-    // 1) Call ProfanityService filter endpoint
-    var http = new HttpClient { BaseAddress = new Uri(builder.Configuration["PROFANITY_URL"] ?? "http://localhost:5001") };
-    var filterResponse = await http.PostAsJsonAsync("/filter", new { Text = request.Body });
-    var filtered = await filterResponse.Content.ReadFromJsonAsync<FilteredResponse>();
+app.UseSwagger();
+app.UseSwaggerUI();
+app.MapControllers();
 
-    // 2) Create ArticleDto
-    var article = new ArticleDto(Guid.NewGuid(), request.Title, filtered!.Filtered, DateTime.UtcNow, request.Author);
-
-    // 3) Publish to RabbitMQ (async API in RabbitMQ.Client 7.x)
-    var exchange = "happy.exchange";
-    var rabbitHost = builder.Configuration["RABBIT_HOST"] ?? "localhost";
-
-    await using var connection = await RabbitHelper.CreateConnectionAsync(rabbitHost);
-    await using var channel = await connection.CreateChannelAsync();
-    await channel.ExchangeDeclareAsync(exchange, ExchangeType.Topic, durable: true);
-    await RabbitHelper.PublishAsync(channel, exchange, "", article);
-    return Results.Ok(article);
-});
 
 app.Run();
 
-record PublishRequest(string Title, string Body, string Author);
-record FilteredResponse(string Filtered);
+
