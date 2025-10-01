@@ -19,6 +19,9 @@ services:
 
   # ---------- ArticleService with 3 replicas ----------
   article-service:
+    build:
+      context: .
+      dockerfile: /src/ArticleService/Dockerfile
     image: happyheadlines/article-service
     depends_on:
       - sqlserver
@@ -32,6 +35,9 @@ services:
 
   # ---------- Other services (single replica each) ----------
   draft-service:
+    build:
+      context: .
+      dockerfile: /src/DraftService/Dockerfile
     image: happyheadlines/draft-service
     depends_on:
       sqlserver:
@@ -43,6 +49,9 @@ services:
       - "8010:80"
 
   publisher-service:
+    build:
+      context: .
+      dockerfile: /src/PublisherService/Dockerfile
     image: happyheadlines/publisher-service
     depends_on:
       - sqlserver
@@ -50,8 +59,11 @@ services:
       DATABASE_NAME: ${PUBLISHER_DB}
       SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "8002:80"
+      - "8020:80"
   comment-service:
+    build:
+      context: .
+      dockerfile: /src/CommentService/Dockerfile
     image: happyheadlines/comment-service
     depends_on:
       - sqlserver
@@ -62,6 +74,9 @@ services:
     ports:
       - "8003:80"
   subscriber-service:
+    build:
+      context: .
+      dockerfile: /src/SubscriberService/Dockerfile
     image: happyheadlines/subscriber-service
     depends_on:
       - sqlserver
@@ -72,6 +87,9 @@ services:
       - "8004:80"
   
   profanity-service:
+    build:
+      context: .
+      dockerfile: /src/ProfanityService/Dockerfile
     image: happyheadlines/profanity-service
     depends_on:
       - sqlserver
@@ -82,6 +100,9 @@ services:
       - "8005:80"
 
   newsletter-service:
+    build:
+      context: .
+      dockerfile: /src/NewsletterService/Dockerfile
     image: happyheadlines/newsletter-service
     depends_on:
       - sqlserver
@@ -89,7 +110,7 @@ services:
       DATABASE_NAME: ${NEWSLETTER_DB}
       SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "8006:80"
+      - "8040:80"
 # ------- RABBITMQ ---------
   rabbitmq:
     image: rabbitmq:3-management

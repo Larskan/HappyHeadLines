@@ -14,7 +14,8 @@ COPY ["src/Shared/Shared.csproj", "Shared/"]
 RUN dotnet restore "NewsletterService/NewsletterService.csproj"
 
 # Copy everything else
-COPY . .
+COPY src/NewsletterService/. NewsletterService/
+COPY src/Shared/. Shared/
 
 # Build
 WORKDIR "/src/NewsletterService"

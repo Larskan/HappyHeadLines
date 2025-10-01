@@ -8,13 +8,14 @@ WORKDIR /src
 
 # Copy project files
 COPY ["src/PublisherService/PublisherService.csproj", "PublisherService/"]
-COPY ["src/Shared/Shared.csproj", "Shared/"]
+COPY ["src/Shared/Shared.csproj", "/Shared/"]
 
 # Restore dependencies
 RUN dotnet restore "PublisherService/PublisherService.csproj"
 
 # Copy everything else
-COPY . .
+COPY src/PublisherService/. PublisherService/
+COPY src/Shared/. Shared/
 
 # Build
 WORKDIR "/src/PublisherService"

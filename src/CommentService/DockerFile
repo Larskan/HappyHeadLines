@@ -7,17 +7,18 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Copy project files
-COPY ["CommentService/CommentService.csproj", "CommentService/"]
-COPY ["Shared/Shared.csproj", "Shared/"]
+COPY ["src/CommentService/CommentService.csproj", "CommentService/"]
+COPY ["src/Shared/Shared.csproj", "Shared/"]
 
 # Restore dependencies
 RUN dotnet restore "CommentService/CommentService.csproj"
 
 # Copy everything else
-COPY . .
+COPY src/CommentService/. CommentService/
+COPY src/Shared/. Shared/
 
 # Build
-WORKDIR "/src/CommentService"
+WORKDIR /src/CommentService
 RUN dotnet build "CommentService.csproj" -c Release -o /app/build
 
 # Publish

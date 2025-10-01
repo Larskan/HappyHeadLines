@@ -1,8 +1,5 @@
 using CommentService.Interfaces;
-using CommentService.Models;
 using Shared;
-using StackExchange.Redis;
-using System.Text.Json;
 
 namespace CommentService.Data;
 
@@ -23,7 +20,7 @@ public class CommentCache
     {
         string key = $"comments:{articleId}";
 
-        // Check redis first
+        // Check redis/cache first
         var cached = await _redis.GetAsync<List<CommentDto>>(key);
         if (cached != null)
         {

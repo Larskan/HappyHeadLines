@@ -1,10 +1,6 @@
 using Shared;
 using ArticleService.Models;
 using ArticleService.Interfaces;
-using Microsoft.Extensions.Logging;
-using StackExchange.Redis;
-using System.Text.Json;
-using Serilog;
 
 namespace ArticleService.Helpers;
 

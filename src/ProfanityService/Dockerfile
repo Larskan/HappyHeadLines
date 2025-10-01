@@ -14,7 +14,8 @@ COPY ["src/Shared/Shared.csproj", "Shared/"]
 RUN dotnet restore "ProfanityService/ProfanityService.csproj"
 
 # Copy everything else
-COPY . .
+COPY src/ProfanityService/. ProfanityService/
+COPY src/Shared/. Shared/
 
 # Build
 WORKDIR "/src/ProfanityService"

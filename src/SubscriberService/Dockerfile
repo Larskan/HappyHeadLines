@@ -16,7 +16,8 @@ COPY ["src/Shared/Shared.csproj", "Shared/"]
 RUN dotnet restore "SubscriberService/SubscriberService.csproj"
 
 # Copy everything else
-COPY . .
+COPY src/SubscriberService/. SubscriberService/
+COPY src/Shared/. Shared/
 
 # Build
 WORKDIR "/src/SubscriberService"
