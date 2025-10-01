@@ -1,24 +1,32 @@
 The overall todo
 - C4 Diagram - Done
-- C4 Diagram for all 4 levels - Do last
 - Implement ArticleService with CRUD and REST API and x-axis with 3 instances and load balancer - Done
 - Implement ArticleDatabase and y-axis so each continent has own DB + a global DB - Done
 - Implement CommentService. Fault Isolated with swimlanes. Takes over if Profanity Fails - Done
 - Implement CommentDatabase - Done
 - Implement ProfanityService. Fault Isolated with swimlanes - Done
 - Implement ProfanityDatabase.  - Done
----------------------------------------------
-- Implement Draftservice with logging and tracing. - In progress
-- Implement DraftDatabase with logging and tracing. - In progress
-- Log and trace in central repo that is reuseable across entire architecture. - Not started
+- Implement Draftservice with logging and tracing. - Done
+- Implement DraftDatabase with logging and tracing. - Done
+- Log and trace in central repo that is reuseable across entire architecture. - Done
 - Add automatic cleaning of logs. - Not started
-- Implement PublisherService with focus on distributed tracing. - In progress
-- Implement NewsletterService with focus on distributed tracing. - In progress
-- Implement ArticleQueue - Needs to be tested
-- Implement ArticleCache using offline process to periodically fill cache with articles from latest 14 days. - Not started
-- Implement CommentCache using cache miss approach to fill cache.  - Not started
-  * Limited to all comments from most recently 30 accessed articles, when its full, the LRU algorith is used to clean up the cache.
-- Use Redis, because I want to learn how to use it. - Not started
+- Implement PublisherService with focus on distributed tracing. - Done
+- Implement NewsletterService with focus on distributed tracing. - Done
+- Implement ArticleQueue - Done
+- Implement ArticleCache using offline process to periodically fill cache with articles from latest 14 days. - Done
+- Implement CommentCache using cache miss approach to fill cache.  - Done
+- Use Redis, because I want to learn how to use it. - Done
+-----
+- C4 Diagram for all 4 levels
+- Test if ArticleQueue works.
+- Test DraftService
+- Test PublisherService
+- Test SubscriberService
+- Test NewsletterService
+- Test Serilog
+- Test Zipkin
+- Test Seq
+- Create the README
 
 Commands
 - docker-compose up -d = Makes sure docker compose grabs the environment.
@@ -77,15 +85,6 @@ DraftService: docker build -t happyheadlines/draft-service -f src/DraftService/D
 
 Run container: docker run -d -p 5001:8080 happyheadlines/draft-service - Gives a container name in the form of a long number.
 Check logs: docker logs number = Shows active apps
-
-THE TODO
-- Test if ArticleQueue works.
-- Test DraftService
-- Test PublisherService
-- Test SubscriberService
-- Test NewsletterService
-- Create the README
-- Finish C4 Diagrams
 
 
 // Current ArticleService
