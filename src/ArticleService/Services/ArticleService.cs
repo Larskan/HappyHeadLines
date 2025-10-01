@@ -3,6 +3,7 @@ using ArticleService.Repositories;
 using ArticleService.Helpers;
 using ArticleService.Interfaces;
 using Shared;
+using System.Security.Cryptography;
 
 namespace ArticleService.Services;
 
@@ -18,7 +19,7 @@ public class ArticleService : IArticleService
     }
 
     // Cache can store full article, but service still returns correct DTO
-    public async Task<ArticleDto?> GetByIdAsync(Guid id, string continent)
+    public async Task<ArticleDto?> GetByIdAsync(int id, string continent)
     {
         // Try cache first
         var cached = await _cache.GetAsync(id);
@@ -39,7 +40,7 @@ public class ArticleService : IArticleService
     {
         var article = new Article
         {
-            Id = Guid.NewGuid(),
+            Id = articleDto.Id,
             Title = articleDto.Title,
             Body = articleDto.Body,
             Author = articleDto.Author,
@@ -49,7 +50,7 @@ public class ArticleService : IArticleService
         return ToDto(created);
     }
 
-    public async Task<bool> UpdateArticleAsync(Guid id, ArticleDto articleDto, string continent)
+    public async Task<bool> UpdateArticleAsync(int id, ArticleDto articleDto, string continent)
     {
         var existingArticle = await _repository.GetByIdAsync(id, continent);
         if (existingArticle is null) return false;
@@ -63,7 +64,7 @@ public class ArticleService : IArticleService
         return await _repository.UpdateArticleAsync(existingArticle, continent);
     }
 
-    public async Task<bool> DeleteArticleAsync(Guid id, string continent) =>
+    public async Task<bool> DeleteArticleAsync(int id, string continent) =>
         await _repository.DeleteArticleAsync(id, continent);
     
     // Mapping method from Article to ArticleDto

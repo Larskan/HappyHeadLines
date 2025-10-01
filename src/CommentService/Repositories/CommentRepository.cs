@@ -36,10 +36,10 @@ public class CommentRepository : ICommentRepository
         return comment;
     }
 
-    public async Task<Comment?> GetByCommentIdAsync(Guid id) =>
+    public async Task<Comment?> GetByCommentIdAsync(int id) =>
         await _dbContext.Comments.FindAsync(id);
 
-    public async Task<List<Comment>> GetByArticleIdAsync(Guid articleId)
+    public async Task<List<Comment>> GetByArticleIdAsync(int articleId)
     {
         var key = $"comments:{articleId}";
         var cached = await _redis.GetAsync<List<Comment>>(key);
@@ -51,7 +51,7 @@ public class CommentRepository : ICommentRepository
     }
 
 
-    public async Task<bool> DeleteCommentAsync(Guid id)
+    public async Task<bool> DeleteCommentAsync(int id)
     {
         var comment = await _dbContext.Comments.FindAsync(id);
         if (comment is null) return false;

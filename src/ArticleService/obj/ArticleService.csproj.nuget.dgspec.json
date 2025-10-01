@@ -69,6 +69,10 @@
               "target": "Package",
               "version": "[9.0.9, )"
             },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.72, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[9.0.4, )"
@@ -151,6 +155,10 @@
             "Microsoft.Extensions.Hosting": {
               "target": "Package",
               "version": "[9.0.9, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.72, )"
             },
             "NRedisStack": {
               "target": "Package",

@@ -7,7 +7,7 @@ namespace CommentService.Interfaces;
 
 public interface ICommentService
 {
-    Task<List<CommentDto>> GetByArticleIdAsync(Guid articleId);
-    Task<CommentDto> CreateCommentAsync(Guid articleId, CommentDto commentDto);
-    Task<bool> DeleteCommentAsync(Guid id);
+    Task<List<CommentDto>> GetByArticleIdAsync(int articleId);
+    Task<CommentDto> CreateCommentAsync(int articleId, CommentDto commentDto);
+    Task<bool> DeleteCommentAsync(int id);
 }

@@ -5,6 +5,6 @@ namespace PublisherService.Interfaces;
 public interface IPublishArticleRepository
 {
     Task<PublishArticle> AddArticleAsync(PublishArticle publishArticle);
-    Task<PublishArticle?> GetArticleByIdAsync(Guid id);
+    Task<PublishArticle?> GetArticleByIdAsync(int id);
     Task<List<PublishArticle>> GetAllArticlesAsync();
 }

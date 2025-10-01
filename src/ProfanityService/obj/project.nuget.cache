@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "OuYKAQwG010=",
+  "dgSpecHash": "n9zZq/vJttY=",
   "success": true,
   "projectFilePath": "C:\\Users\\Bruger\\VSCode\\HappyHeadLines\\src\\ProfanityService\\ProfanityService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Bruger\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\Bruger\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\microsoft.build.framework\\17.8.3\\microsoft.build.framework.17.8.3.nupkg.sha512",
@@ -71,6 +72,7 @@
     "C:\\Users\\Bruger\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
+    "C:\\Users\\Bruger\\.nuget\\packages\\moq\\4.20.72\\moq.4.20.72.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\nredisstack\\1.1.1\\nredisstack.1.1.1.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\opentelemetry\\1.12.0\\opentelemetry.1.12.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\opentelemetry.api\\1.12.0\\opentelemetry.api.1.12.0.nupkg.sha512",

@@ -4,7 +4,6 @@ using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using System;
 
 namespace Shared;
 

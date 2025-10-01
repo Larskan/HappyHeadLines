@@ -17,7 +17,7 @@ public class CommentService : ICommentService
     }
 
     // Create a comment for a specific article with profanity filtering
-    public async Task<CommentDto> CreateCommentAsync(Guid articleId, CommentDto commentDto)
+    public async Task<CommentDto> CreateCommentAsync(int articleId, CommentDto commentDto)
     {
         string filteredText = commentDto.Body;
         try
@@ -38,7 +38,7 @@ public class CommentService : ICommentService
 
         var comment = new Comment
         {
-            Id = Guid.NewGuid(),
+            Id = commentDto.Id,
             ArticleId = articleId,
             Author = commentDto.Author,
             Body = filteredText,
@@ -50,13 +50,13 @@ public class CommentService : ICommentService
         return ToDto(created);
     }
 
-    public async Task<List<CommentDto>> GetByArticleIdAsync(Guid articleId)
+    public async Task<List<CommentDto>> GetByArticleIdAsync(int articleId)
     {
         var comments = await _repository.GetByArticleIdAsync(articleId);
         return comments.Select(ToDto).ToList();
     }
 
-    public async Task<bool> DeleteCommentAsync(Guid id) =>
+    public async Task<bool> DeleteCommentAsync(int id) =>
         await _repository.DeleteCommentAsync(id);
 
     // Mapping method from Comment to CommentDto

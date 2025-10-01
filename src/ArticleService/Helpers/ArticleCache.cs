@@ -52,7 +52,7 @@ public class ArticleCache : BackgroundService
     }
 
     // Try to get articles from cache first
-    public async Task<Article?> GetAsync(Guid id)
+    public async Task<Article?> GetAsync(int id)
     {
         string key = CacheKeyPrefix + id;
         var article = await _redis.GetAsync<Article>(key);

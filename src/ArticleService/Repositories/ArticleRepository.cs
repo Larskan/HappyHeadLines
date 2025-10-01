@@ -10,7 +10,7 @@ public class ArticleRepository(IServiceProvider services, RedisHelper redis) : I
     private readonly IServiceProvider _services = services;
     private readonly RedisHelper _redis = redis;
 
-    public async Task<Article?> GetByIdAsync(Guid id, string continent)
+    public async Task<Article?> GetByIdAsync(int id, string continent)
     {
         var key = $"article:{continent}:{id}";
         var cached = await _redis.GetAsync<Article>(key);
@@ -51,7 +51,7 @@ public class ArticleRepository(IServiceProvider services, RedisHelper redis) : I
         return true;
     }
 
-    public async Task<bool> DeleteArticleAsync(Guid id, string continent)
+    public async Task<bool> DeleteArticleAsync(int id, string continent)
     {
         using var db = Helpers.DatabaseSelector.GetDbContext(_services, continent);
         var article = await db.Articles.FindAsync(id);

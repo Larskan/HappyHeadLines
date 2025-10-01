@@ -18,7 +18,7 @@ public class PublishArticleRepository : IPublishArticleRepository
         return publishArticle;
     }
 
-    public async Task<PublishArticle?> GetArticleByIdAsync(Guid id) =>
+    public async Task<PublishArticle?> GetArticleByIdAsync(int id) =>
         await _context.PublishArticles.FirstOrDefaultAsync(a => a.PubArticleId == id);
 
     public async Task<List<PublishArticle>> GetAllArticlesAsync() => await _context.PublishArticles.ToListAsync();
