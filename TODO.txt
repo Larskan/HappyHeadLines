@@ -80,30 +80,37 @@ Check logs: docker logs number = Shows active apps
 
 // Current ArticleService
 Communication with Docker works.
+Make mock data for testing.
+Test if ArticleQueue works.
 
 // Current CommentService
 Communication with Docker works.
+Make mock data for testing.
 
 // Current ProfanityService
 Communication with Docker works.
 CircuitBreaker, if it fails, CommentService takes over.
+Make mock data for testing.
 
 // Current DraftService
 Communication with Docker works.
 Communication with Swagger works.
 May need some dummy data to properly test. It struggles with Posting.
 Logging and tracing has been finished, need to test.
+Make mock data for testing.
 
 // PublisherService
-Setup is completed, missing docker test.
+Communication with Docker works.
 Added Distributed tracing
+Make mock data for testing.
 
 // NewsletterService
-Setup is completed, missing docker test.
+Communication with Docker works.
 Added Distributed tracing.
+Make mock data for testing.
 
 // SubscriberService
-Setup is completed, missing docker test.
+Communication with Docker works.
 
 // Shared
 Contains the DTOs
