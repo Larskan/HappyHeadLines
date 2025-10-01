@@ -5,16 +5,10 @@ using Shared;
 
 namespace CommentService.Services;
 
-public class CommentService : ICommentService
+public class CommentService(ICommentRepository repository, IHttpClientFactory httpClientFactory) : ICommentService
 {
-    private readonly ICommentRepository _repository;
-    private readonly HttpClient _profanityClient;
-
-    public CommentService(ICommentRepository repository, IHttpClientFactory httpClientFactory)
-    {
-        _repository = repository;
-        _profanityClient = httpClientFactory.CreateClient("Profanity");
-    }
+    private readonly ICommentRepository _repository = repository;
+    private readonly HttpClient _profanityClient = httpClientFactory.CreateClient("Profanity");
 
     // Create a comment for a specific article with profanity filtering
     public async Task<CommentDto> CreateCommentAsync(int articleId, CommentDto commentDto)

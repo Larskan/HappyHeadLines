@@ -21,8 +21,8 @@ public class ArticleController : ControllerBase
         HttpContext.Request.Headers["X-Continent"].ToString() ?? "Global";
 
     
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult> GetById(Guid id)
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult> GetById(int id)
     {
         var article = await _service.GetByIdAsync(id, GetContinent());
         return article is null ? NotFound() : Ok(article);
@@ -44,14 +44,14 @@ public class ArticleController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateArticle(Guid id, [FromBody] ArticleDto articleDto)
+    public async Task<IActionResult> UpdateArticle(int id, [FromBody] ArticleDto articleDto)
     {
         var updated = await _service.UpdateArticleAsync(id, articleDto, GetContinent());
         return updated ? Ok(articleDto) : NotFound();
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteArticle(Guid id)
+    public async Task<IActionResult> DeleteArticle(int id)
     {
         var deleted = await _service.DeleteArticleAsync(id, GetContinent());
         return deleted ? NoContent() : NotFound();

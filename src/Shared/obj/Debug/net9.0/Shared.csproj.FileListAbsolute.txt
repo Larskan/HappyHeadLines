@@ -11,3 +11,5 @@ C:\Users\Bruger\VSCode\HappyHeadLines\src\Shared\obj\Debug\net9.0\refint\Shared.
 C:\Users\Bruger\VSCode\HappyHeadLines\src\Shared\obj\Debug\net9.0\Shared.pdb
 C:\Users\Bruger\VSCode\HappyHeadLines\src\Shared\obj\Debug\net9.0\ref\Shared.dll
 C:\Users\Bruger\VSCode\HappyHeadLines\src\Shared\obj\Debug\net9.0\Shared.sourcelink.json
+C:\Users\Bruger\VSCode\HappyHeadLines\src\Shared\bin\Debug\net9.0\Shared.runtimeconfig.json
+C:\Users\Bruger\VSCode\HappyHeadLines\src\Shared\obj\Debug\net9.0\Shared.genruntimeconfig.cache

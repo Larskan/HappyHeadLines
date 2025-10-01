@@ -25,9 +25,14 @@ builder.Services.AddSingleton<RedisHelper>();
 // Adding CommentCache
 builder.Services.AddSingleton<CommentCache>();
 
-// Dependency Injection
-builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+// Dependency Injection - Outcomment ICommentRepository when testing for mocking
+// builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ICommentService, CommentService.Services.CommentService>();
+
+// Testing purposes
+var mockData = new CommentMockData();
+// Singletons purpose: Mock data lives for the lifetime of the application.
+builder.Services.AddSingleton<ICommentRepository>(mockData.commentRepository);
 
 // If ProfanityService fails, CommentService stops calling it temporarily, but can continue to store raw comments or provide fallback logic
 // If 2 consecutive calls fail, the circuit breaker will stop calls for 15 seconds. 

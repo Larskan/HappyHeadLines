@@ -16,7 +16,7 @@ public class CommentCache
         _redis = redis;
     }
 
-    public async Task<List<CommentDto>> GetCommentsAsync(Guid articleId)
+    public async Task<List<CommentDto>> GetCommentsAsync(int articleId)
     {
         string key = $"comments:{articleId}";
 
@@ -42,7 +42,7 @@ public class CommentCache
         return dtoList;
     }
 
-    private async Task UpdateRecentArticlesAsync(Guid articleId)
+    private async Task UpdateRecentArticlesAsync(int articleId)
     {
         // Fetch current recent list
         var recent = await _redis.GetAsync<List<string>>(_recentArticlesKey) ?? new List<string>();

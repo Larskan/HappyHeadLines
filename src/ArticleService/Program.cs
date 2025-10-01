@@ -11,9 +11,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Dependency Injection
-builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+// Dependency Injection - Outcomment IArticleRepository when testing for mocking
+// builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IArticleService, ArticleService.Services.ArticleService>();
+
+// Testing purposes
+var mockData = new ArticleMockData();
+// Singletons purpose: Mock data lives for the lifetime of the application.
+builder.Services.AddSingleton<IArticleRepository>(mockData.articleRepository);
 
 // Add Redis
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect("redis:6379"));
