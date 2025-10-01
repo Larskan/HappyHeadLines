@@ -9,7 +9,6 @@ namespace ArticleService.Helpers;
 public class ArticleMockData
 {
     public IArticleRepository articleRepository => mockArticleRepo.Object;
-    public IArticleService articleService => articleService;
     private Mock<IArticleRepository> mockArticleRepo;
 
     public ArticleMockData()
@@ -31,7 +30,39 @@ public class ArticleMockData
         mockArticleRepo.Setup(repo => repo.GetAllAsync("Global")).ReturnsAsync(articles);
 
         // Setup GetByIdAsync to return single article
-        
+        mockArticleRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<int>(), "Global")).ReturnsAsync((int id, string continent) => articles.Find(a => a.Id == id));
+
+        // Create article
+        mockArticleRepo.Setup(repo => repo.CreateArticleAsync(It.IsAny<Article>(), "Global")).ReturnsAsync((Article art, string continent) =>
+        {
+            int newId = articles.Count + 1;
+            art.Id = newId;
+            articles.Add(art);
+            return art;
+        });
+
+        // Update article
+        mockArticleRepo.Setup(repo => repo.UpdateArticleAsync(It.IsAny<Article>(), "Global")).ReturnsAsync((Article art, string continent) =>
+        {
+            var existing = articles.Find(a => a.Id == art.Id);
+            if (existing == null) return false;
+
+            existing.Title = art.Title;
+            existing.Body = art.Body;
+            return true;
+        });
+
+        // Delete article
+        mockArticleRepo.Setup(repo => repo.DeleteArticleAsync(It.IsAny<int>(), "Global")).ReturnsAsync((int id, string continent) =>
+        {
+            var art = articles.Find(a => a.Id == id);
+            if (art == null) return false;
+            articles.Remove(art);
+            return true;
+        });
+
+        // Get articles since a specific date
+        mockArticleRepo.Setup(repo => repo.GetArticlesSinceAsync(It.IsAny<DateTime>())).ReturnsAsync((DateTime since) => articles.FindAll(a => a.CreatedAt >= since));
     }
 
 }
