@@ -83,6 +83,7 @@ THE TODO
 - Test DraftService
 - Test PublisherService
 - Test SubscriberService
+- Test NewsletterService
 - Create the README
 - Finish C4 Diagrams
 
@@ -124,11 +125,12 @@ Communication with Docker works.
 // Shared
 Contains the DTOs
 Contains the RabbitHelper
-Contains RedisHelper
+Contains RedisHelper and IRedisHelper
 Contains LoggingHelper
-Need to add ArticleCache, consider if it should be Shared or within one of the services.
-Need to add CommentCache, consider if it should be Shared or within one of the services.
+Contains the ArticleQueue
 
+// Testing
+Has 3 Tests - All Pass
 
 
 
