@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace Shared;
 
-public class RedisHelper
+public class RedisHelper : IRedisHelper
 {
     private readonly IDatabase _db;
 

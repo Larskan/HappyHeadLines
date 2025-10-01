@@ -5,12 +5,12 @@ namespace CommentService.Data;
 
 public class CommentCache
 {
-    private readonly RedisHelper _redis;
+    private readonly IRedisHelper _redis;
     private readonly ICommentRepository _repo;
     private readonly string _recentArticlesKey = "recent_articles";
     private readonly int _maxArticles = 30;
 
-    public CommentCache(RedisHelper redis, ICommentRepository repo)
+    public CommentCache(IRedisHelper redis, ICommentRepository repo)
     {
         _repo = repo;
         _redis = redis;

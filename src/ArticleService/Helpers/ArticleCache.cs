@@ -6,13 +6,13 @@ namespace ArticleService.Helpers;
 
 public class ArticleCache : BackgroundService
 {
-    private readonly RedisHelper _redis;
+    private readonly IRedisHelper _redis;
     private readonly IArticleRepository _repo;
     private readonly ILogger<ArticleCache> _logger;
     private readonly TimeSpan _updateInternal = TimeSpan.FromMinutes(10); // Refresh every 10min
     private const string CacheKeyPrefix = "article:";
 
-    public ArticleCache(RedisHelper redis, IArticleRepository repo, ILogger<ArticleCache> logger)
+    public ArticleCache(IRedisHelper redis, IArticleRepository repo, ILogger<ArticleCache> logger)
     {
         _redis = redis;
         _repo = repo;

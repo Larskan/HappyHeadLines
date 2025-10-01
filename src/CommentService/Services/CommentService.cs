@@ -55,5 +55,5 @@ public class CommentService(ICommentRepository repository, IHttpClientFactory ht
 
     // Mapping method from Comment to CommentDto
     private static CommentDto ToDto(Comment c) =>
-        new CommentDto(c.Id, c.ArticleId, c.Body, c.Author, c.CreatedAt);
+        new CommentDto(c.Id, c.ArticleId, c.Author, c.Body, c.CreatedAt);
 }

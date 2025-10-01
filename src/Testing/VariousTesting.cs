@@ -15,6 +15,9 @@ using Serilog;
 using Microsoft.Extensions.Logging;
 using ArticleService.Models;
 using CommentService.Data;
+using System;
+using System.Collections.Generic;
+
 
 
 namespace Testing;
@@ -54,7 +57,7 @@ public class VariousTesting
     public async Task GetArticle_ShouldReturnFromCacheBeforeRepo()
     {
         // Arrange
-        var mockRedis = new Mock<RedisHelper>();
+        var mockRedis = new Mock<IRedisHelper>();
         var mockRepo = new Mock<IArticleRepository>();
         var mockLogger = new Mock<ILogger<ArticleCache>>();
         var cachedArticle = new Article { Id = 1, Title = "Cached", Body = "From cache" };
@@ -77,7 +80,7 @@ public class VariousTesting
         {
             new CommentDto(1, 1, "Lars Test", "Hello", DateTime.UtcNow)
         };
-        var mockRedis = new Mock<RedisHelper>();
+        var mockRedis = new Mock<IRedisHelper>();
         var mockRepo = new Mock<ICommentRepository>();
 
         mockRedis.Setup(r => r.GetAsync<List<CommentDto>>("comments:1")).ReturnsAsync(cachedComments);
@@ -92,13 +95,5 @@ public class VariousTesting
         mockRepo.Verify(r => r.GetByArticleIdAsync(It.IsAny<int>()), Times.Never);
     }
 
-
-    private class FailingHttpMessageHandler : HttpMessageHandler
-    {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
-        {
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.InternalServerError));
-        }
-    }
 }
 
