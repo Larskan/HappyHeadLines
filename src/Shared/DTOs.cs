@@ -7,3 +7,4 @@ public record ProfanityDto(int Id, string Filtered);
 public record DraftDto(int Id, int AuthorId, string Title, string Body, DateTime CreatedAt, DateTime UpdatedAt);
 public record DraftCreateDto(string Title, string Body, int AuthorId);
 public record DraftUpdateDto(string Title, string Body);
+public record ArticleMessageDto(int Id, int AuthorId, string Title, string Body, DateTime PublishedAt);

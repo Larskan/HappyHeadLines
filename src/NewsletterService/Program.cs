@@ -33,9 +33,15 @@ builder.Services.AddSingleton(sp =>
 
 // Dependency Injection
 builder.Services.AddScoped<INewsArticleRepository, NewsArticleRepository>();
+builder.Services.AddSingleton<IArticleQueuePublisher, ArticleQueue>();
+builder.Services.AddSingleton<IArticleQueueSubscriber, ArticleQueue>();
 
 // Background subscriber service
-builder.Services.AddHostedService<ArticleQueueSubscriber>();
+builder.Services.AddHostedService<NewsletterArticleSubscriber>();
 
 var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+app.MapControllers();
 app.Run();

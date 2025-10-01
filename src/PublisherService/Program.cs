@@ -33,6 +33,8 @@ builder.Services.AddSingleton(sp =>
 
 //Dependency Injection
 builder.Services.AddScoped<IPublishArticleRepository, PublishArticleRepository>();
+builder.Services.AddSingleton<IArticleQueuePublisher, ArticleQueue>();
+builder.Services.AddSingleton<IArticleQueueSubscriber, ArticleQueue>();
 
 var app = builder.Build();
 

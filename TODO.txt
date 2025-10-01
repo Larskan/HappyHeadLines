@@ -80,17 +80,17 @@ Check logs: docker logs number = Shows active apps
 
 // Current ArticleService
 Communication with Docker works.
-Make mock data for testing.
+Tested and passed for ArticleCache before Repo is used.
 Test if ArticleQueue works.
 
 // Current CommentService
 Communication with Docker works.
-Make mock data for testing.
+Tested and passed for CommentCache before Repo is used.
 
 // Current ProfanityService
 Communication with Docker works.
 CircuitBreaker, if it fails, CommentService takes over.
-Make mock data for testing.
+Tested and passed for Profanity Shutdown and Comment takes over.
 
 // Current DraftService
 Communication with Docker works.

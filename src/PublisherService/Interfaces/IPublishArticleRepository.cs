@@ -1,4 +1,4 @@
-using PublisherService.Models;
+using Shared.Models;
 
 namespace PublisherService.Interfaces;
 
