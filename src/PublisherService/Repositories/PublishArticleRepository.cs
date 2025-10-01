@@ -1,4 +1,4 @@
-using PublisherService.Models;
+using Shared.Models;
 using PublisherService.Interfaces;
 using PublisherService.Data;
 using Microsoft.EntityFrameworkCore;

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using PublisherService.Models;
+using Shared.Models;
 
 namespace PublisherService.Data;
 

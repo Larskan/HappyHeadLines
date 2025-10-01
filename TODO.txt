@@ -78,6 +78,15 @@ DraftService: docker build -t happyheadlines/draft-service -f src/DraftService/D
 Run container: docker run -d -p 5001:8080 happyheadlines/draft-service - Gives a container name in the form of a long number.
 Check logs: docker logs number = Shows active apps
 
+THE TODO
+- Test if ArticleQueue works.
+- Test DraftService
+- Test PublisherService
+- Test SubscriberService
+- Create the README
+- Finish C4 Diagrams
+
+
 // Current ArticleService
 Communication with Docker works.
 Tested and passed for ArticleCache before Repo is used.
