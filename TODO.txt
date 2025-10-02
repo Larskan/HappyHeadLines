@@ -19,6 +19,9 @@ The overall todo
 -----
 - C4 Diagram for all 4 levels
 - Make Dashboard that shows cache-hit-ratio of the CommentCache and ArticleCache
+- Implement proper connection to articles based on continents.
+- Need proper ProfanityDB with bad words.
+- Make more logs and consider what logs are should have, would have and wont have
 - Test if ArticleQueue works.
 - Test DraftService
 - Test PublisherService
@@ -28,6 +31,8 @@ The overall todo
 - Test Zipkin
 - Test Seq
 - Create the README
+- Create the presentation
+
 
 Commands
 - docker-compose up -d = Makes sure docker compose grabs the environment.
