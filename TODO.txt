@@ -18,6 +18,7 @@ The overall todo
 - Use Redis, because I want to learn how to use it. - Done
 -----
 - C4 Diagram for all 4 levels
+- Make Dashboard that shows cache-hit-ratio of the CommentCache and ArticleCache
 - Test if ArticleQueue works.
 - Test DraftService
 - Test PublisherService
