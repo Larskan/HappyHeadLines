@@ -53,12 +53,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
 app.MapControllers();
 
 // Expose metrics for prometheus scraping
 app.UseMetricServer();
 app.UseHttpMetrics();
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    _ = endpoints.MapControllers();
+    _ = endpoints.MapMetrics(); // Map Prometheus metrics endpoint
+});
 
 app.Run();
 

@@ -12,6 +12,9 @@ public class CommentCache
     private readonly int _maxArticles = 30;
     private static readonly Counter CacheHits = Metrics.CreateCounter("comment_cache_hits", "Number of cache hits for comments");
     private static readonly Counter CacheMisses = Metrics.CreateCounter("comment_cache_misses", "Number of cache misses for comments");
+    private static readonly Gauge CacheHitRatio = Metrics.CreateGauge("comment_cache_hit_ratio", "Cache hit ratio for comments");
+    private static readonly Gauge CacheMissRatio = Metrics.CreateGauge("comment_cache_miss_ratio", "Cache miss ratio for comments");
+
 
     public CommentCache(IRedisHelper redis, ICommentRepository repo)
     {
@@ -28,12 +31,14 @@ public class CommentCache
         if (cached != null)
         {
             CacheHits.Inc();
+            UpdateRatios();
             await UpdateRecentArticlesAsync(articleId);
             return cached;
         }
 
         // Cache miss: Fetch from DB
         CacheMisses.Inc();
+        UpdateRatios();
         var comments = await _repo.GetByArticleIdAsync(articleId);
         var dtoList = comments.Select(c => new CommentDto(c.Id, c.ArticleId, c.Body, c.Author, c.CreatedAt)).ToList();
 
@@ -75,6 +80,21 @@ public class CommentCache
 
         // Save updated list
         await _redis.SetAsync(_recentArticlesKey, recent);
-        
+
+    }
+
+    private void UpdateRatios()
+    {
+        var hits = CacheHits.Value;
+        var misses = CacheMisses.Value;
+        var total = hits + misses;
+
+        if (total > 0)
+        {
+            double hitRatio = hits / total;
+            double missRatio = misses / total;
+            CacheHitRatio.Set(hitRatio);
+            CacheMissRatio.Set(missRatio);
+        }
     }
 }

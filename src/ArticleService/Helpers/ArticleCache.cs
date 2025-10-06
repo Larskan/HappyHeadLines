@@ -14,6 +14,8 @@ public class ArticleCache : BackgroundService
     private const string CacheKeyPrefix = "article:";
     private static readonly Counter CacheHits = Metrics.CreateCounter("article_cache_hits", "Number of cache hits for articles");
     private static readonly Counter CacheMisses = Metrics.CreateCounter("article_cache_misses", "Number of cache misses for articles");
+    private static readonly Gauge CacheHitRatio = Metrics.CreateGauge("article_cache_hit_ratio", "Cache hit ratio for articles");
+    private static readonly Gauge CacheMissRatio = Metrics.CreateGauge("article_cache_miss_ratio", "Cache miss ratio for articles");
 
 
     public ArticleCache(IRedisHelper redis, IArticleRepository repo, ILogger<ArticleCache> logger)
@@ -59,8 +61,38 @@ public class ArticleCache : BackgroundService
     public async Task<Article?> GetAsync(int id)
     {
         string key = CacheKeyPrefix + id;
+        var cached = await _redis.GetAsync<Article>(key);
+        if (cached != null)
+        {
+            CacheHits.Inc();
+            UpdateRatios();
+            return cached;
+        }
+        CacheMisses.Inc();
+        UpdateRatios();
+
+        // On cache miss, fetch from DB
         var article = await _redis.GetAsync<Article>(key);
-        CacheHits.Inc();
+        if (article != null)
+        {
+            await _redis.SetAsync(key, article, TimeSpan.FromDays(14));
+        }
+
         return article;
+    }
+    
+    private void UpdateRatios()
+    {
+        var hits = CacheHits.Value;
+        var misses = CacheMisses.Value;
+        var total = hits + misses;
+
+        if (total > 0)
+        {
+            double hitRatio = hits / total;
+            double missRatio = misses / total;
+            CacheHitRatio.Set(hitRatio);
+            CacheMissRatio.Set(missRatio);
+        }
     }
 }
