@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen();
 // DB
 var dbName = builder.Configuration["DATABASE_NAME"] ?? "CommentDb";
 // Allows the service to use its own database.
-builder.Services.AddDbContext<CommentDbContext>(options => options.UseSqlServer($"Server=sqlserver,1433;Database={dbName};User Id=sa;Password={builder.Configuration["SA_PASSWORD"]};"));
+builder.Services.AddDbContext<CommentDbContext>(options => options.UseSqlServer($"Server=sqlserver,1433;Database={dbName};User Id=sa;Password={builder.Configuration["SA_PASSWORD"]};TrustServerCertificate=True"));
 
 // Add Redis
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect("redis:6379"));

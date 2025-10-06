@@ -18,12 +18,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Logging attempt
-// builder.Host.UseSerilog((ctx, lc) => lc
-//     .WriteTo.Console()
-//     .WriteTo.File("logs/draftservice-.log", rollingInterval: RollingInterval.Day)
-//     .Enrich.FromLogContext());
-
 // DB
 var dbName = builder.Configuration["DATABASE_NAME"] ?? "DraftDb";
 // Allows the service to use its own database.

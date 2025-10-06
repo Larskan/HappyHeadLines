@@ -18,24 +18,24 @@ The overall todo
 - Use Redis, because I want to learn how to use it. - Done
 - Make Dashboard that shows cache-hit-ratio of the CommentCache and ArticleCache - Done
 - Implement proper connection to articles based on continents. - Done
+- Need proper ProfanityDB with bad words. - Done
 -----
 - C4 Diagram for all 4 levels
 - Get some data on the dashboard.
-- Need proper ProfanityDB with bad words. - 
 - Make more logs and consider what logs are should have, would have and wont have - 
 - Test if ArticleQueue works. - 
 - Test DraftService - 
 - Test PublisherService - 
 - Test SubscriberService - 
 - Test NewsletterService - 
-- Test Serilog - 
-- Test Zipkin - 
-- Test Seq - 
+- Test Serilog+Zipkin+Seq - 
 - Create the README - 
 - Create the presentation
 
 
 Commands
+- To run Db Update while keeping it docker friendly:
+dotnet ef database update --connection "Server=localhost,1435;Database=ProfanityDb;User Id=sa;Password=My_Passw0rd123;TrustServerCertificate=True;"
 - docker-compose up -d = Makes sure docker compose grabs the environment.
 - docker exec -it <sqlserver-container-name> /opt/mssql-tools/bin/sqlcmd \ -S localhost -U sa -P $SA_PASSWORD = To see the Db running
 - Select Name From sys.Databases; = List DB.
