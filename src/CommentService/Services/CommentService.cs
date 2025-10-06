@@ -2,6 +2,8 @@ using CommentService.Models;
 using CommentService.Repositories;
 using CommentService.Interfaces;
 using Shared;
+using Microsoft.AspNetCore.Mvc;
+using CommentService.Data;
 
 namespace CommentService.Services;
 

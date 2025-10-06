@@ -6,7 +6,7 @@ using CommentService.Models;
 namespace CommentService.Controllers;
 
 [ApiController]
-[Route("api/articles/[articleId]/comments")]
+[Route("api/articles/{articleId}/comments")]
 public class CommentController : ControllerBase
 {
     private readonly ICommentService _service;
@@ -23,10 +23,10 @@ public class CommentController : ControllerBase
         return Ok(comments);
     }
 
-    [HttpGet("{articleId:guid}")]
-    public async Task<ActionResult<CommentDto>> GetByIdAsync(int articleId)
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<CommentDto>> GetByIdAsync(int articleId, int id)
     {
-        var comments = await _service.GetByArticleIdAsync(articleId);
+        var comments = await _service.GetByArticleIdAsync(id);
         return comments is null ? NotFound() : Ok(comments);
     }
 
@@ -38,7 +38,7 @@ public class CommentController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteCommentAsync(int id)
+    public async Task<IActionResult> DeleteCommentAsync(int articleId, int id)
     {
         var deleted = await _service.DeleteCommentAsync(id);
         return deleted ? NoContent() : NotFound();

@@ -16,9 +16,10 @@ The overall todo
 - Implement ArticleCache using offline process to periodically fill cache with articles from latest 14 days. - Done
 - Implement CommentCache using cache miss approach to fill cache.  - Done
 - Use Redis, because I want to learn how to use it. - Done
+- Make Dashboard that shows cache-hit-ratio of the CommentCache and ArticleCache - Done
 -----
 - C4 Diagram for all 4 levels
-- Make Dashboard that shows cache-hit-ratio of the CommentCache and ArticleCache - Saturday
+- Get some data on the dashboard.
 - Implement proper connection to articles based on continents. - Saturday
 - Need proper ProfanityDB with bad words. - Saturday
 - Make more logs and consider what logs are should have, would have and wont have - Saturday
