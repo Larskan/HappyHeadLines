@@ -22,7 +22,6 @@ The overall todo
 -----
 - C4 Diagram for all 4 levels
 - Get some data on the dashboard.
-- Make more logs and consider what logs are should have, would have and wont have - 
 - Test if ArticleQueue works. - 
 - Test DraftService - 
 - Test PublisherService - 

@@ -72,7 +72,7 @@ services:
       DATABASE_NAME: ${COMMENT_DB}
       SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "8003:8080"
+      - "8033:8080"
      
   subscriber-service:
     build:
@@ -125,6 +125,19 @@ services:
     ports:
       - "9411:9411" # Zipkin ui at http://localhost:9411
   
+
+# ---- SEQ ----
+  seq:
+    image: datalust/seq:latest
+    container_name: seq
+    restart: always
+    ports:
+      - "5341:80" # Seq UI at http://localhost:5341
+    environment:
+      ACCEPT_EULA: "Y"
+    volumes:
+      - seq-data:/data
+
 # ----- REDIS -----
   redis:
     image: redis:7
@@ -157,6 +170,4 @@ services:
 
 volumes:
   mssql-data:
-  article-data:
-  comment-data:
-  profanity-data:
+  seq-data:

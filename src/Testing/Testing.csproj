@@ -24,6 +24,8 @@
     <ProjectReference Include="..\CommentService\CommentService.csproj" />
     <ProjectReference Include="..\ProfanityService\ProfanityService.csproj" />
     <ProjectReference Include="..\ArticleService\ArticleService.csproj" />
+    <ProjectReference Include="..\DraftService\DraftService.csproj" />
+    <ProjectReference Include="..\PublisherService\PublisherService.csproj" />
   </ItemGroup>
 
 </Project>

@@ -17,10 +17,18 @@ using ArticleService.Models;
 using CommentService.Data;
 using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Metadata;
+using RabbitMQ.Client;
+using Microsoft.EntityFrameworkCore;
+using DraftService.Data;
+using PublisherService.Repositories;
+using Shared.Models;
+using System.Threading;
 
 
 
 namespace Testing;
+
 public class VariousTesting
 {
     [Fact]
@@ -41,7 +49,7 @@ public class VariousTesting
         // handlerMock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ThrowsAsync(new HttpRequestException("ProfanityService down"));
 
         var service = new CommentService.Services.CommentService(mockRepo.Object, mockFactory.Object);
-        var dto = new CommentDto (1, 1, "Lars Test", "Hello", DateTime.UtcNow );
+        var dto = new CommentDto(1, 1, "Lars Test", "Hello", DateTime.UtcNow);
 
         // Act
         var result = await service.CreateCommentAsync(1, dto);
@@ -94,6 +102,7 @@ public class VariousTesting
         Assert.Single(result);
         mockRepo.Verify(r => r.GetByArticleIdAsync(It.IsAny<int>()), Times.Never);
     }
+
 
 }
 

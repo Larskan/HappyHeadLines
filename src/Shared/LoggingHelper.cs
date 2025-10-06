@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
+using Serilog.Sinks.Seq;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
@@ -33,7 +34,7 @@ public static class LoggingHelper
                     rollingInterval: RollingInterval.Day,
                     retainedFileCountLimit: 14, //Keep 2 weeks
                     rollOnFileSizeLimit: true
-                );
+                ).WriteTo.Seq("http://seq:5341"); //Docker internal DNS
         });
         return hostBuilder;
     }

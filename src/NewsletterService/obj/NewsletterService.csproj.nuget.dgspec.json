@@ -205,6 +205,10 @@
               "target": "Package",
               "version": "[6.0.0, )"
             },
+            "Serilog.Sinks.Seq": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "xunit": {
               "target": "Package",
               "version": "[2.9.3, )"
