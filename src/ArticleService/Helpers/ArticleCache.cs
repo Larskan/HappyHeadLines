@@ -1,6 +1,7 @@
 using Shared;
 using ArticleService.Models;
 using ArticleService.Interfaces;
+using Prometheus;
 
 namespace ArticleService.Helpers;
 
@@ -11,6 +12,9 @@ public class ArticleCache : BackgroundService
     private readonly ILogger<ArticleCache> _logger;
     private readonly TimeSpan _updateInternal = TimeSpan.FromMinutes(10); // Refresh every 10min
     private const string CacheKeyPrefix = "article:";
+    private static readonly Counter CacheHits = Metrics.CreateCounter("article_cache_hits", "Number of cache hits for articles");
+    private static readonly Counter CacheMisses = Metrics.CreateCounter("article_cache_misses", "Number of cache misses for articles");
+
 
     public ArticleCache(IRedisHelper redis, IArticleRepository repo, ILogger<ArticleCache> logger)
     {
@@ -56,6 +60,7 @@ public class ArticleCache : BackgroundService
     {
         string key = CacheKeyPrefix + id;
         var article = await _redis.GetAsync<Article>(key);
+        CacheHits.Inc();
         return article;
     }
 }

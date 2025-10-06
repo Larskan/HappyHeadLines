@@ -5,6 +5,7 @@ using CommentService.Data;
 using CommentService.Interfaces;
 using CommentService.Repositories;
 using StackExchange.Redis;
+using Prometheus;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,9 @@ builder.Services.AddDbContext<CommentDbContext>(options => options.UseSqlServer(
 // Add Redis
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect("redis:6379"));
 builder.Services.AddSingleton<RedisHelper>();
+
+// Prometheus metrics endpoint
+builder.Services.AddSingleton<CollectorRegistry>(Metrics.DefaultRegistry);
 
 // Adding CommentCache
 builder.Services.AddSingleton<CommentCache>();
@@ -51,6 +55,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 app.MapControllers();
+
+// Expose metrics for prometheus scraping
+app.UseMetricServer();
+app.UseHttpMetrics();
 
 app.Run();
 

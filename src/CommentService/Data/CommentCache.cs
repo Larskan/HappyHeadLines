@@ -1,5 +1,6 @@
 using CommentService.Interfaces;
 using Shared;
+using Prometheus;
 
 namespace CommentService.Data;
 
@@ -9,6 +10,8 @@ public class CommentCache
     private readonly ICommentRepository _repo;
     private readonly string _recentArticlesKey = "recent_articles";
     private readonly int _maxArticles = 30;
+    private static readonly Counter CacheHits = Metrics.CreateCounter("comment_cache_hits", "Number of cache hits for comments");
+    private static readonly Counter CacheMisses = Metrics.CreateCounter("comment_cache_misses", "Number of cache misses for comments");
 
     public CommentCache(IRedisHelper redis, ICommentRepository repo)
     {
@@ -24,11 +27,13 @@ public class CommentCache
         var cached = await _redis.GetAsync<List<CommentDto>>(key);
         if (cached != null)
         {
+            CacheHits.Inc();
             await UpdateRecentArticlesAsync(articleId);
             return cached;
         }
 
         // Cache miss: Fetch from DB
+        CacheMisses.Inc();
         var comments = await _repo.GetByArticleIdAsync(articleId);
         var dtoList = comments.Select(c => new CommentDto(c.Id, c.ArticleId, c.Body, c.Author, c.CreatedAt)).ToList();
 

@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'happyheadlines-monitor'
+  
+scrape_configs:
+  - job_name: 'comment-service'
+    static_configs:
+      - targets: ['comment-service:80']
+  - job_name: 'article-service'
+    static_configs:
+      - targets: ['article-service:80']

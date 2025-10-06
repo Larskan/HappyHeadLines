@@ -3,6 +3,7 @@ using ArticleService.Interfaces;
 using StackExchange.Redis;
 using Shared;
 using ArticleService.Helpers;
+using Prometheus;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,9 @@ var mockData = new ArticleMockData();
 // Singletons purpose: Mock data lives for the lifetime of the application.
 builder.Services.AddSingleton<IArticleRepository>(mockData.articleRepository);
 
+// Prometheus metrics endpoint
+builder.Services.AddSingleton<CollectorRegistry>(Metrics.DefaultRegistry);
+
 // Add Redis
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect("redis:6379"));
 builder.Services.AddSingleton<RedisHelper>();
@@ -29,6 +33,10 @@ builder.Services.AddHostedService(sp => sp.GetRequiredService<ArticleCache>());
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
+
+// Expose metrics for prometheus scraping
+app.UseMetricServer();
+app.UseHttpMetrics();
 
 app.MapControllers();
 

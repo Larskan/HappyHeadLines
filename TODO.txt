@@ -18,19 +18,19 @@ The overall todo
 - Use Redis, because I want to learn how to use it. - Done
 -----
 - C4 Diagram for all 4 levels
-- Make Dashboard that shows cache-hit-ratio of the CommentCache and ArticleCache
-- Implement proper connection to articles based on continents.
-- Need proper ProfanityDB with bad words.
-- Make more logs and consider what logs are should have, would have and wont have
-- Test if ArticleQueue works.
-- Test DraftService
-- Test PublisherService
-- Test SubscriberService
-- Test NewsletterService
-- Test Serilog
-- Test Zipkin
-- Test Seq
-- Create the README
+- Make Dashboard that shows cache-hit-ratio of the CommentCache and ArticleCache - Saturday
+- Implement proper connection to articles based on continents. - Saturday
+- Need proper ProfanityDB with bad words. - Saturday
+- Make more logs and consider what logs are should have, would have and wont have - Saturday
+- Test if ArticleQueue works. - Sunday
+- Test DraftService - Saturday
+- Test PublisherService - Saturday
+- Test SubscriberService - Saturday
+- Test NewsletterService - Saturday
+- Test Serilog - Sunday
+- Test Zipkin - Sunday
+- Test Seq - Sunday
+- Create the README - Sunday
 - Create the presentation
 
 
@@ -52,6 +52,7 @@ Commands
 - docker logs containername = Shows the trace and error logs.
 - docker stop containername = Stop a container.
 - netstat -ano | findstr :8001 = To see if anything runs on 8001 port.
+- dotnet add package prometheus-net.AspNetCore
 
 Webapp: Publish an article.
 PublisherService: Handles the publishing of articles, sends to ArticleQueue.
