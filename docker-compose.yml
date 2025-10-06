@@ -31,7 +31,7 @@ services:
     deploy:
       replicas: 3
     ports:
-      - "8000:80"
+      - "80"
 
   # ---------- Other services (single replica each) ----------
   draft-service:
@@ -84,7 +84,7 @@ services:
       DATABASE_NAME: ${SUBSCRIBER_DB}
       SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "8004:80"
+      - "8050:80"
   
   profanity-service:
     build:
@@ -97,7 +97,7 @@ services:
       DATABASE_NAME: ${PROFANITY_DB}
       SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "8005:80"
+      - "8060:80"
 
   newsletter-service:
     build:
@@ -143,6 +143,13 @@ services:
       - comment-service
       - article-service
   
+# ------------- GRAFANA -------------
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
 
 volumes:
   mssql-data:

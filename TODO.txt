@@ -45,7 +45,7 @@ Commands
 - docker build -t happyheadlines/publisher-service -f src/PublisherService/Dockerfile . = run PublisherService in root.
 - docker build -t happyheadlines/newsletter-service -f src/NewsletterService/Dockerfile . = run NewsletterService in root.
 - docker build -t happyheadlines/subscriber-service -f src/SubscriberService/Dockerfile . = run SubscriberService in root.
-- docker run -d -p 5001:8080 happyheadlines/draft-service = to be run after docker build
+- docker run -docker run -d -p 5001:8080 happyheadlines/draft-service = to be run after docker build
 - docker-compose up --build = Runs the entire docker compose, aka if 1 service doesnt work, this wont launch.
 - docker-compose up --build draft-service sqlserver = Runs the draft service through docker compose file and sqlserver.
 - docker-compose down = Disables the entire docker compose file.
