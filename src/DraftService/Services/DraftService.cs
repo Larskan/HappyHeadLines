@@ -3,6 +3,7 @@ using DraftService.Interfaces;
 using DraftService.Data;
 using Microsoft.EntityFrameworkCore;
 using Shared;
+using System.Diagnostics;
 
 
 
@@ -22,6 +23,8 @@ public class DraftService : IDraftService
 
     public async Task<DraftCreateDto> CreateDraftAsync(DraftCreateDto draftCreateDto)
     {
+        // manual span for demo
+        using var activity = new Activity("CreateDraft").Start();
         var draft = new Draft
         {
             Title = draftCreateDto.Title,
@@ -35,6 +38,9 @@ public class DraftService : IDraftService
         await _context.SaveChangesAsync();
 
         _logger.LogInformation("Created draft {@Draft}", draft);
+
+        activity?.SetTag("draft.id", draft.Id);
+        activity?.SetTag("draft.authorId", draft.AuthorId);
 
         return ToDtoCreate(draft);
     }

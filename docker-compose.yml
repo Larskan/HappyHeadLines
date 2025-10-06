@@ -31,7 +31,7 @@ services:
     deploy:
       replicas: 3
     ports:
-      - "80"
+      - "8080"
 
   # ---------- Other services (single replica each) ----------
   draft-service:
@@ -46,7 +46,7 @@ services:
       DATABASE_NAME: ${DRAFT_DB}
       SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "8010:80"
+      - "8010:8080"
 
   publisher-service:
     build:
@@ -59,7 +59,7 @@ services:
       DATABASE_NAME: ${PUBLISHER_DB}
       SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "8020:80"
+      - "8020:8080"
   comment-service:
     build:
       context: .
@@ -85,7 +85,7 @@ services:
       DATABASE_NAME: ${SUBSCRIBER_DB}
       SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "8050:80"
+      - "8050:8080"
   
   profanity-service:
     build:
@@ -111,7 +111,7 @@ services:
       DATABASE_NAME: ${NEWSLETTER_DB}
       SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "8040:80"
+      - "8040:8080"
 # ------- RABBITMQ ---------
   rabbitmq:
     image: rabbitmq:3-management
