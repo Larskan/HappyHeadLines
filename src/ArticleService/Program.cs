@@ -13,13 +13,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Dependency Injection - Outcomment IArticleRepository when testing for mocking
-// builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IArticleService, ArticleService.Services.ArticleService>();
 
 // Testing purposes
-var mockData = new ArticleMockData();
-// Singletons purpose: Mock data lives for the lifetime of the application.
-builder.Services.AddSingleton<IArticleRepository>(mockData.articleRepository);
+// var mockData = new ArticleMockData();
+// // Singletons purpose: Mock data lives for the lifetime of the application.
+// builder.Services.AddSingleton<IArticleRepository>(mockData.articleRepository);
 
 // Prometheus metrics endpoint
 builder.Services.AddSingleton<CollectorRegistry>(Metrics.DefaultRegistry);
@@ -33,6 +33,14 @@ builder.Services.AddHostedService(sp => sp.GetRequiredService<ArticleCache>());
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
+
+// The multiple databases of Articles.
+var continents = new[] { "NorthAmerica", "SouthAmerica", "Europe", "Africa", "Asia", "Australia", "Antarctica", "Global" };
+foreach (var continent in continents)
+{
+    var context = DatabaseSelector.GetDbContext(app.Services, continent);
+    context.Database.EnsureCreated();
+}
 
 // Expose metrics for prometheus scraping
 app.UseMetricServer();

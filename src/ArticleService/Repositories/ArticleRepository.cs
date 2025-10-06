@@ -2,13 +2,23 @@ using ArticleService.Models;
 using Microsoft.EntityFrameworkCore;
 using ArticleService.Interfaces;
 using Shared;
+using ArticleService.Helpers;
 
 namespace ArticleService.Repositories;
 
-public class ArticleRepository(IServiceProvider services, RedisHelper redis) : IArticleRepository
+public class ArticleRepository: IArticleRepository
 {
-    private readonly IServiceProvider _services = services;
-    private readonly RedisHelper _redis = redis;
+    private readonly IServiceProvider _services ;
+    private readonly RedisHelper _redis;
+
+    public ArticleRepository(IServiceProvider services, RedisHelper redis)
+    {
+        _services = services;
+        _redis = redis;
+    }
+    
+    private ArticleDbContext GetContext(string continent) => DatabaseSelector.GetDbContext(_services, continent);
+    
 
     public async Task<Article?> GetByIdAsync(int id, string continent)
     {
@@ -16,7 +26,7 @@ public class ArticleRepository(IServiceProvider services, RedisHelper redis) : I
         var cached = await _redis.GetAsync<Article>(key);
         if (cached != null) return cached;
 
-        using var db = Helpers.DatabaseSelector.GetDbContext(_services, continent);
+        using var db = GetContext(continent);
         var article = await db.Articles.FindAsync(id);
 
         if (article != null) await _redis.SetAsync(key, article, TimeSpan.FromDays(14));
@@ -25,13 +35,13 @@ public class ArticleRepository(IServiceProvider services, RedisHelper redis) : I
 
     public async Task<List<Article>> GetAllAsync(string continent)
     {
-        using var db = Helpers.DatabaseSelector.GetDbContext(_services, continent);
+        using var db = GetContext(continent);
         return await db.Articles.ToListAsync();
     }
 
     public async Task<Article> CreateArticleAsync(Article article, string continent)
     {
-        using var db = Helpers.DatabaseSelector.GetDbContext(_services, continent);
+        using var db = GetContext(continent);
         db.Articles.Add(article);
         await db.SaveChangesAsync();
 
@@ -42,7 +52,7 @@ public class ArticleRepository(IServiceProvider services, RedisHelper redis) : I
 
     public async Task<bool> UpdateArticleAsync(Article article, string continent)
     {
-        using var db = Helpers.DatabaseSelector.GetDbContext(_services, continent);
+        using var db = GetContext(continent);
         db.Articles.Update(article);
         await db.SaveChangesAsync();
 
@@ -53,7 +63,7 @@ public class ArticleRepository(IServiceProvider services, RedisHelper redis) : I
 
     public async Task<bool> DeleteArticleAsync(int id, string continent)
     {
-        using var db = Helpers.DatabaseSelector.GetDbContext(_services, continent);
+        using var db = GetContext(continent);
         var article = await db.Articles.FindAsync(id);
         if (article is null) return false;
         db.Articles.Remove(article);
@@ -69,7 +79,7 @@ public class ArticleRepository(IServiceProvider services, RedisHelper redis) : I
 
     public async Task<List<Article>> GetArticlesSinceAsync(DateTime since)
     {
-        using var db = Helpers.DatabaseSelector.GetDbContext(_services, "global");
+        using var db = GetContext("global");
         return await db.Articles.Where(a => a.PublishedAt >= since).ToListAsync();
     }
 }

@@ -72,7 +72,8 @@ services:
       DATABASE_NAME: ${COMMENT_DB}
       SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "8003:80"
+      - "8003:8080"
+     
   subscriber-service:
     build:
       context: .
@@ -97,7 +98,7 @@ services:
       DATABASE_NAME: ${PROFANITY_DB}
       SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "8060:80"
+      - "8060:8080"
 
   newsletter-service:
     build:
@@ -134,7 +135,7 @@ services:
 
 # ------------- PROMETHEUS -------------
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:latest
     ports:
       - "9090:9090"
     volumes:
@@ -150,12 +151,12 @@ services:
       - "3000:3000"
     depends_on:
       - prometheus
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./grafana/dashboards:/var/lib/grafana/dashboards
 
 volumes:
   mssql-data:
+  article-data:
+  comment-data:
+  profanity-data:
