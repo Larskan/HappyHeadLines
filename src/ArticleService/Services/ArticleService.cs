@@ -22,7 +22,7 @@ public class ArticleService : IArticleService
     public async Task<ArticleDto?> GetByIdAsync(int id, string continent)
     {
         // Try cache first
-        var cached = await _cache.GetAsync(id);
+        var cached = await _cache.GetArticlesFromCacheFirstAsync(id);
         if (cached != null) return ToDto(cached);
 
         // fallback to DB

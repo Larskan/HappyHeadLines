@@ -57,8 +57,8 @@ public class ArticleCache : BackgroundService
 
     }
 
-    // Try to get articles from cache first
-    public async Task<Article?> GetAsync(int id)
+    // Try to get articles from cache first, otherwise from DB
+    public async Task<Article?> GetArticlesFromCacheFirstAsync(int id, string continent)
     {
         string key = CacheKeyPrefix + id;
         var cached = await _redis.GetAsync<Article>(key);
@@ -72,15 +72,17 @@ public class ArticleCache : BackgroundService
         UpdateRatios();
 
         // On cache miss, fetch from DB
-        var article = await _redis.GetAsync<Article>(key);
+        var article = await _repo.GetByIdAsync(id, continent);
         if (article != null)
         {
+            // Adds the db result to the cache for next time, with a 14-day expiration
             await _redis.SetAsync(key, article, TimeSpan.FromDays(14));
         }
 
         return article;
     }
     
+    // Update cache hit/miss ratios for the metrics
     private void UpdateRatios()
     {
         var hits = CacheHits.Value;

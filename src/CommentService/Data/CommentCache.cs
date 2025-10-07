@@ -8,8 +8,8 @@ public class CommentCache
 {
     private readonly IRedisHelper _redis;
     private readonly ICommentRepository _repo;
-    private readonly string _recentArticlesKey = "recent_articles";
-    private readonly int _maxArticles = 30;
+    private readonly string _recentArticlesKey = "recent_articles"; // Key to track recent articles with comments
+    private readonly int _maxArticles = 30; //Only the 30 most recent articles with comments are cached
     private static readonly Counter CacheHits = Metrics.CreateCounter("comment_cache_hits", "Number of cache hits for comments");
     private static readonly Counter CacheMisses = Metrics.CreateCounter("comment_cache_misses", "Number of cache misses for comments");
     private static readonly Gauge CacheHitRatio = Metrics.CreateGauge("comment_cache_hit_ratio", "Cache hit ratio for comments");
@@ -30,9 +30,10 @@ public class CommentCache
         var cached = await _redis.GetAsync<List<CommentDto>>(key);
         if (cached != null)
         {
+            // If it finds stuff in the cache, add a cache hit to the metrics.
             CacheHits.Inc();
             UpdateRatios();
-            await UpdateRecentArticlesAsync(articleId);
+            await UpdateRecentArticlesAsync(articleId); // Marks this article as recently used
             return cached;
         }
 
@@ -40,13 +41,14 @@ public class CommentCache
         CacheMisses.Inc();
         UpdateRatios();
         var comments = await _repo.GetByArticleIdAsync(articleId);
+        // Converts database stuff to DTOs
         var dtoList = comments.Select(c => new CommentDto(c.Id, c.ArticleId, c.Body, c.Author, c.CreatedAt)).ToList();
 
-        // Save to redis
+        // Save to redis cache
         await _redis.SetAsync(key, dtoList);
-        await UpdateRecentArticlesAsync(articleId);
+        await UpdateRecentArticlesAsync(articleId); // Marks this article as recently used
 
-        // Trim LRU if needed
+        // Trim LRU if needed, aka if we have more than _maxArticles articles with comments in the cache, we trim the oldest ones away
         await TrimLRUAsync();
 
         return dtoList;
@@ -58,11 +60,11 @@ public class CommentCache
         var recent = await _redis.GetAsync<List<string>>(_recentArticlesKey) ?? new List<string>();
 
         // Move or add articleId to the front
-        recent.Remove(articleId.ToString());
-        recent.Insert(0, articleId.ToString());
+        recent.Remove(articleId.ToString()); // If this article is already in cache, but lower down, we remove it first
+        recent.Insert(0, articleId.ToString()); // Then we add the article to the front, so it's the most recently used
 
         // Save back
-        await _redis.SetAsync(_recentArticlesKey, recent);
+        await _redis.SetAsync(_recentArticlesKey, recent); // No expiration, we want to keep track of recent articles indefinitely.. or until we reach max capacity.
     }
 
     private async Task TrimLRUAsync()
@@ -83,6 +85,7 @@ public class CommentCache
 
     }
 
+    // For prometheus and grafana metric stuff.
     private void UpdateRatios()
     {
         var hits = CacheHits.Value;

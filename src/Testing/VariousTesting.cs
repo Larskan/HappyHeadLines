@@ -73,7 +73,7 @@ public class VariousTesting
         var cache = new ArticleCache(mockRedis.Object, mockRepo.Object, mockLogger.Object);
 
         // Act
-        var result = await cache.GetAsync(1);
+        var result = await cache.GetArticlesFromCacheFirstAsync(1);
 
         // Assert
         Assert.Equal(cachedArticle.Title, result!.Title);
