@@ -20,14 +20,14 @@ The overall todo
 - Implement proper connection to articles based on continents. - Done
 - Need proper ProfanityDB with bad words. - Done
 -----
-- C4 Diagram for all 4 levels
-- Get some data on the dashboard.
+- C4 Diagram for all 4 levels - Lvl 1 Done, Lvl 2 Done, Lvl 3 in progress, Lvl 4 in progress
+- Get some data on the dashboard, would be nice, but not super needed since it works.
 - Test if ArticleQueue works. - 
-- Test DraftService - 
-- Test PublisherService - 
-- Test SubscriberService - 
-- Test NewsletterService - 
-- Test Serilog+Zipkin+Seq - 
+- Test DraftService
+- Test PublisherService
+- Test SubscriberService
+- Test NewsletterService
+- Test Serilog+Zipkin+Seq
 - Create the README - 
 - Create the presentation
 
@@ -39,12 +39,6 @@ dotnet ef database update --connection "Server=localhost,1435;Database=Profanity
 - docker exec -it <sqlserver-container-name> /opt/mssql-tools/bin/sqlcmd \ -S localhost -U sa -P $SA_PASSWORD = To see the Db running
 - Select Name From sys.Databases; = List DB.
 - docker build -t happyheadlines/article-service -f src/ArticleService/Dockerfile . = run ArticleService in root.
-- docker build -t happyheadlines/comment-service -f src/CommentService/Dockerfile . = run CommentService in root.
-- docker build -t happyheadlines/profanity-service -f src/ProfanityService/Dockerfile . = run ProfanityService in root.
-- docker build -t happyheadlines/draft-service -f src/DraftService/Dockerfile . = run DraftService in root.
-- docker build -t happyheadlines/publisher-service -f src/PublisherService/Dockerfile . = run PublisherService in root.
-- docker build -t happyheadlines/newsletter-service -f src/NewsletterService/Dockerfile . = run NewsletterService in root.
-- docker build -t happyheadlines/subscriber-service -f src/SubscriberService/Dockerfile . = run SubscriberService in root.
 - docker run -docker run -d -p 5001:8080 happyheadlines/draft-service = to be run after docker build
 - docker-compose up --build = Runs the entire docker compose, aka if 1 service doesnt work, this wont launch.
 - docker-compose up --build draft-service sqlserver = Runs the draft service through docker compose file and sqlserver.
@@ -94,49 +88,12 @@ Run container: docker run -d -p 5001:8080 happyheadlines/draft-service - Gives a
 Check logs: docker logs number = Shows active apps
 
 
-// Current ArticleService
-Communication with Docker works.
-Tested and passed for ArticleCache before Repo is used.
-Test if ArticleQueue works.
-
-// Current CommentService
-Communication with Docker works.
-Tested and passed for CommentCache before Repo is used.
-
-// Current ProfanityService
-Communication with Docker works.
-CircuitBreaker, if it fails, CommentService takes over.
-Tested and passed for Profanity Shutdown and Comment takes over.
-
-// Current DraftService
-Communication with Docker works.
-Communication with Swagger works.
-May need some dummy data to properly test. It struggles with Posting.
-Logging and tracing has been finished, need to test.
-Make mock data for testing.
-
-// PublisherService
-Communication with Docker works.
-Added Distributed tracing
-Make mock data for testing.
-
-// NewsletterService
-Communication with Docker works.
-Added Distributed tracing.
-Make mock data for testing.
-
-// SubscriberService
-Communication with Docker works.
-
 // Shared
 Contains the DTOs
 Contains the RabbitHelper
 Contains RedisHelper and IRedisHelper
 Contains LoggingHelper
 Contains the ArticleQueue
-
-// Testing
-Has 3 Tests - All Pass
 
 
 
