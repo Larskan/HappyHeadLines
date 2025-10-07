@@ -43,15 +43,14 @@ builder.Services.AddSingleton<ICommentRepository>(mockData.commentRepository);
 // Then allow one call to test if the service is back up..otherwise the circuit breaker goes back to "open" state
 builder.Services.AddHttpClient("Profanity", client =>
 {
-    client.BaseAddress = new Uri("http://profanity-service:80");
+    client.BaseAddress = new Uri("http://profanity-service:8080");
 }).AddTransientHttpErrorPolicy(policy => policy.CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 2, durationOfBreak: TimeSpan.FromSeconds(15)));
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.MapControllers();
 

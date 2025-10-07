@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "mX4hZ+2Z4MI=",
+  "dgSpecHash": "NZD2T8AGMHQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\Bruger\\VSCode\\HappyHeadLines\\src\\DraftService\\DraftService.csproj",
   "expectedPackageFiles": [
@@ -88,6 +88,9 @@
     "C:\\Users\\Bruger\\.nuget\\packages\\rabbitmq.client\\7.1.2\\rabbitmq.client.7.1.2.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\serilog.aspnetcore\\9.0.0\\serilog.aspnetcore.9.0.0.nupkg.sha512",
+    "C:\\Users\\Bruger\\.nuget\\packages\\serilog.enrichers.environment\\3.0.1\\serilog.enrichers.environment.3.0.1.nupkg.sha512",
+    "C:\\Users\\Bruger\\.nuget\\packages\\serilog.enrichers.process\\3.0.0\\serilog.enrichers.process.3.0.0.nupkg.sha512",
+    "C:\\Users\\Bruger\\.nuget\\packages\\serilog.enrichers.thread\\4.0.0\\serilog.enrichers.thread.4.0.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\serilog.extensions.hosting\\9.0.0\\serilog.extensions.hosting.9.0.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\serilog.extensions.logging\\9.0.0\\serilog.extensions.logging.9.0.0.nupkg.sha512",
     "C:\\Users\\Bruger\\.nuget\\packages\\serilog.formatting.compact\\3.0.0\\serilog.formatting.compact.3.0.0.nupkg.sha512",

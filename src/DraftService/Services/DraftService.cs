@@ -4,22 +4,18 @@ using DraftService.Data;
 using Microsoft.EntityFrameworkCore;
 using Shared;
 using System.Diagnostics;
+using Serilog;
 
 
 
 namespace DraftService.Services;
 
 
-public class DraftService : IDraftService
+public class DraftService(DraftDbContext context, Serilog.ILogger serilogger) : IDraftService
 {
-    private readonly DraftDbContext _context;
-    private readonly ILogger<DraftService> _logger;
-
-    public DraftService(DraftDbContext context, ILogger<DraftService> logger)
-    {
-        _context = context;
-        _logger = logger;
-    }
+    private readonly DraftDbContext _context = context;
+    // private readonly ILogger<DraftService> _logger;
+    private readonly Serilog.ILogger _serilogger = serilogger;
 
     public async Task<DraftCreateDto> CreateDraftAsync(DraftCreateDto draftCreateDto)
     {
@@ -37,7 +33,8 @@ public class DraftService : IDraftService
         _context.Drafts.Add(draft);
         await _context.SaveChangesAsync();
 
-        _logger.LogInformation("Created draft {@Draft}", draft);
+        _serilogger.Information("Created draft {@Draft}", draft);
+        _serilogger.Information("Lars ran this piece of code");
 
         activity?.SetTag("draft.id", draft.Id);
         activity?.SetTag("draft.authorId", draft.AuthorId);
@@ -48,12 +45,15 @@ public class DraftService : IDraftService
     public async Task<DraftDto?> GetDraftByIdAsync(int id)
     {
         var draft = await _context.Drafts.FindAsync(id);
+        _serilogger.Information("Retrieved draft {@Draft}", draft);
+        _serilogger.Information("Lars ran this piece of code");
         return draft == null ? null : ToDto(draft);
     }
 
     public async Task<List<DraftDto>> GetAllDraftsAsync(int authorId)
     {
         var drafts = await _context.Drafts.ToListAsync();
+        _serilogger.Information("Retrieved {Count} drafts for author {AuthorId}", drafts.Count, authorId);
         return drafts.Select(ToDto).ToList();
     }
 
@@ -65,6 +65,8 @@ public class DraftService : IDraftService
         draft.Title = draftUpdateDto.Title;
         draft.Body = draftUpdateDto.Body;
         draft.UpdatedAt = DateTime.UtcNow;
+
+        _serilogger.Information("Updating draft {@Draft}", draft);
 
         await _context.SaveChangesAsync();
         return true;

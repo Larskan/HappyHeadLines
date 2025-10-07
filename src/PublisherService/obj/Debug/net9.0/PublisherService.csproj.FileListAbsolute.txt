@@ -219,3 +219,4 @@ C:\Users\Bruger\VSCode\HappyHeadLines\src\PublisherService\bin\Debug\net9.0\xuni
 C:\Users\Bruger\VSCode\HappyHeadLines\src\PublisherService\bin\Debug\net9.0\xunit.execution.dotnet.dll
 C:\Users\Bruger\VSCode\HappyHeadLines\src\PublisherService\bin\Debug\net9.0\runtimes\win\lib\net9.0\System.Diagnostics.EventLog.dll
 C:\Users\Bruger\VSCode\HappyHeadLines\src\PublisherService\obj\Debug\net9.0\PublisherService.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Bruger\VSCode\HappyHeadLines\src\PublisherService\bin\Debug\net9.0\Serilog.Sinks.Seq.dll

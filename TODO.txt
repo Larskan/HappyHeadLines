@@ -19,15 +19,17 @@ The overall todo
 - Make Dashboard that shows cache-hit-ratio of the CommentCache and ArticleCache - Done
 - Implement proper connection to articles based on continents. - Done
 - Need proper ProfanityDB with bad words. - Done
+- Tested serilog - Done
+- Tested Zipkin - Done
+- Tested DraftService - Done
 -----
 - C4 Diagram for all 4 levels - Lvl 1 Done, Lvl 2 Done, Lvl 3 in progress, Lvl 4 in progress
 - Get some data on the dashboard, would be nice, but not super needed since it works.
 - Test if ArticleQueue works. - 
-- Test DraftService
 - Test PublisherService
 - Test SubscriberService
 - Test NewsletterService
-- Test Serilog+Zipkin+Seq
+- Test Seq
 - Create the README - 
 - Create the presentation
 

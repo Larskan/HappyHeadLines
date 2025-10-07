@@ -43,7 +43,7 @@ public class VariousTesting
         var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
 
         var httpClient = new HttpClient(handlerMock.Object);
-        httpClient.BaseAddress = new Uri("http://profanity-service:80");
+        httpClient.BaseAddress = new Uri("http://profanity-service:8080");
         mockFactory.Setup(f => f.CreateClient("Profanity")).Returns(httpClient);
 
         // handlerMock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>()).ThrowsAsync(new HttpRequestException("ProfanityService down"));

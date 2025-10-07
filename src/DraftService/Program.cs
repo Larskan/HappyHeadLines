@@ -4,6 +4,7 @@ using DraftService.Data;
 using DraftService.Services;
 using DraftService.Repositories;
 using Shared;
+using Serilog;
 
 
 
@@ -12,6 +13,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Central logging and tracing
 builder.Host.UseCentralLogging("DraftService");
 builder.Services.AddCentralTracing("DraftService");
+
+// Make Serilog default
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services)
+        .Enrich.FromLogContext()
+        .WriteTo.Console();
+});
 
 // Controllers and swagger
 builder.Services.AddControllers();
@@ -34,5 +45,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.MapControllers();
+
+app.UseSerilogRequestLogging(); // Whenever a request a made, serilog will log it.
 
 app.Run();

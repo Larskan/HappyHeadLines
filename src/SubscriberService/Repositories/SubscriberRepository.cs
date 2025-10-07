@@ -10,6 +10,7 @@ public class SubscriberRepository : ISubscriberRepository
     private readonly SubscriberDbContext _context;
     public SubscriberRepository(SubscriberDbContext context) => _context = context;
 
+    // TODO: Add to SubscriberQueue later
     public async Task<Subscriber> AddSubscriberAsync(Subscriber subscriber)
     {
         _context.Subscribers.Add(subscriber);
