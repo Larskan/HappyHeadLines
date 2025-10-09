@@ -33,7 +33,7 @@ Go to each service and apply migration to get the Database.
 ```
 dotnet ef database update
 ```
-Running the above while keeping it docker-friendly
+Running the above while keeping it docker-friendly. ServiceDB depends on which service you are inside. User is your DB user, Password is your db password.
 ```
 dotnet ef database update --connection "Server=localhost,1435;Database={ServiceDB};User Id={User};Password={Password};TrustServerCertificate=True;"
 ```
