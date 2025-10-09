@@ -6,12 +6,19 @@ The project uses Entity Framework to do code-first databases through migrations 
 
 ## Specialities
 DraftService contains Serilogging and tracing using zipkin.
+
 ArticleService contains x-axis scaling and y-axes scaling as well as ArticleCache.
+
 ProfanityService contains fault isolation, so if it fails, the CommentService won't.
+
 CommentService contains fault isolation regarding ProfanityService and CommentCache.
+
 PublisherService contains ArticleQueue.
+
 NewsletterService contains subscriber to ArticleQueue, 
+
 Shared contains the RedisHelper, the LoggingHelper(Serilog and tracing), ArticleQueue, DTOs, RabbitHelper, PublishArticle Model. Accessible to all Services.
+
 Testing contains some unit testing.
 
 ## Technologies used
