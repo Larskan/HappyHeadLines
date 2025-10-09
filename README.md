@@ -24,8 +24,19 @@ Testing contains some unit testing.
 ## Technologies used
 VS Code IDE, Microsoft SQL, Docker, GitHub, ASP.NET Core, EF Core, Prometheus+Grafana, Zipkin, Serilog.
 
-## 
-
+## Run
+Build the docker environment:
+```
+docker-compose up -d
+```
+Go to each service and apply migration to get the Database.
+```
+dotnet ef database update
+```
+Running the above while keeping it docker-friendly
+```
+dotnet ef database update --connection "Server=localhost,1435;Database={ServiceDB};User Id={User};Password={Password};TrustServerCertificate=True;"
+```
 
 
 
