@@ -10,6 +10,7 @@ public class ArticleCache : BackgroundService
     private readonly IRedisHelper _redis;
     private readonly IArticleRepository _repo;
     private readonly ILogger<ArticleCache> _logger;
+    private readonly IServiceProvider _services;
     private readonly TimeSpan _updateInternal = TimeSpan.FromMinutes(10); // Refresh every 10min
     private const string CacheKeyPrefix = "article:";
     private static readonly Counter CacheHits = Metrics.CreateCounter("article_cache_hits", "Number of cache hits for articles");
@@ -18,11 +19,12 @@ public class ArticleCache : BackgroundService
     private static readonly Gauge CacheMissRatio = Metrics.CreateGauge("article_cache_miss_ratio", "Cache miss ratio for articles");
 
 
-    public ArticleCache(IRedisHelper redis, IArticleRepository repo, ILogger<ArticleCache> logger)
+    public ArticleCache(IRedisHelper redis, IArticleRepository repo, ILogger<ArticleCache> logger, IServiceProvider services)
     {
         _redis = redis;
         _repo = repo;
         _logger = logger;
+        _services = services;
     }
 
     // Periodically refresh cache
@@ -32,7 +34,7 @@ public class ArticleCache : BackgroundService
         {
             try
             {
-                await RefreshCacheAsync();
+                await RefreshCacheAsync(ct);
             }
             catch (Exception ex)
             {
@@ -42,19 +44,22 @@ public class ArticleCache : BackgroundService
         }
     }
 
-    private async Task RefreshCacheAsync()
+    private async Task RefreshCacheAsync(CancellationToken ct)
     {
-        // Fetch articles from the last 14 days
-        var cutoff = DateTime.UtcNow.AddDays(-14);
-        var recentArticles = await _repo.GetArticlesSinceAsync(cutoff);
-
-        foreach (var article in recentArticles)
+        while (!ct.IsCancellationRequested)
         {
-            string key = CacheKeyPrefix + article.Id;
-            await _redis.SetAsync(key, article, TimeSpan.FromDays(14));
-        }
-        _logger.LogInformation("ArticleCache updated with {Count} articles", recentArticles.Count);
+            // Fetch articles from the last 14 days
+            var since = DateTime.UtcNow.AddDays(-14);
+            var recentArticles = await _repo.GetArticlesSinceAsync(since);
 
+            // Update cache
+            foreach (var article in recentArticles)
+            {
+                string key = CacheKeyPrefix + article.Id;
+                await _redis.SetAsync(key, article, TimeSpan.FromDays(14));
+            }
+            _logger.LogInformation("ArticleCache updated with {Count} articles", recentArticles.Count);
+        }   
     }
 
     // Try to get articles from cache first, otherwise from DB

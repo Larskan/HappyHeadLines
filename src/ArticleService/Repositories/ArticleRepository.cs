@@ -79,7 +79,8 @@ public class ArticleRepository: IArticleRepository
 
     public async Task<List<Article>> GetArticlesSinceAsync(DateTime since)
     {
-        using var db = GetContext("global");
+        using var scope = _services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<ArticleDbContext>();
         return await db.Articles.Where(a => a.PublishedAt >= since).ToListAsync();
     }
 }

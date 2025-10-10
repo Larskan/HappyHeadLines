@@ -21,6 +21,7 @@ public class ArticleQueue : IArticleQueuePublisher, IArticleQueueSubscriber
 {
     private readonly IConnection _connection;
     private static readonly ActivitySource activitySource = new("Shared.ArticleQueue");
+    public static RabbitHelper RabbitHelper { get; } = new();
 
     public ArticleQueue(IConnection connection)
     {
@@ -32,14 +33,13 @@ public class ArticleQueue : IArticleQueuePublisher, IArticleQueueSubscriber
         using var channel = await _connection.CreateChannelAsync(cancellationToken: ct);
         await channel.ExchangeDeclareAsync("article_exchange", ExchangeType.Fanout, durable: true, cancellationToken: ct);
 
-        var json = JsonSerializer.Serialize(article);
-        var body = Encoding.UTF8.GetBytes(json);
+        var helper = new RabbitHelper();
 
         using var activity = activitySource.StartActivity("PublishArticle");
         activity?.AddTag("messaging.system", "rabbitmq");
         activity?.AddTag("messaging.destination", "article_exchange");
 
-        await channel.BasicPublishAsync(exchange: "article_exchange", routingKey: "", body: body, cancellationToken: ct);
+        await helper.PublishAsync(channel: channel, exchange: "article_exchange", routingKey: "", message: article, ct);
     }
 
     public async Task SubscribeAsync(Func<PublishArticle, CancellationToken, Task> handler, CancellationToken ct = default)
