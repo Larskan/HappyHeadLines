@@ -10,7 +10,6 @@ public class ArticleCache : BackgroundService
     private readonly IRedisHelper _redis;
     private readonly IArticleRepository _repo;
     private readonly ILogger<ArticleCache> _logger;
-    private readonly IServiceProvider _services;
     private readonly TimeSpan _updateInternal = TimeSpan.FromMinutes(10); // Refresh every 10min
     private const string CacheKeyPrefix = "article:";
     private static readonly Counter CacheHits = Metrics.CreateCounter("article_cache_hits", "Number of cache hits for articles");
@@ -19,17 +18,17 @@ public class ArticleCache : BackgroundService
     private static readonly Gauge CacheMissRatio = Metrics.CreateGauge("article_cache_miss_ratio", "Cache miss ratio for articles");
 
 
-    public ArticleCache(IRedisHelper redis, IArticleRepository repo, ILogger<ArticleCache> logger, IServiceProvider services)
+    public ArticleCache(IRedisHelper redis, IArticleRepository repo, ILogger<ArticleCache> logger)
     {
         _redis = redis;
         _repo = repo;
         _logger = logger;
-        _services = services;
     }
 
     // Periodically refresh cache
     protected override async Task ExecuteAsync(CancellationToken ct)
     {
+        // Keep looping as long as cancellation has not been requested
         while (!ct.IsCancellationRequested)
         {
             try
