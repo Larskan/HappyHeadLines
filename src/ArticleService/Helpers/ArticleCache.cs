@@ -7,6 +7,7 @@ namespace ArticleService.Helpers;
 
 public class ArticleCache : BackgroundService
 {
+    #region Global Variables
     private readonly IRedisHelper _redis;
     private readonly IArticleRepository _repo;
     private readonly ILogger<ArticleCache> _logger;
@@ -16,7 +17,7 @@ public class ArticleCache : BackgroundService
     private static readonly Counter CacheMisses = Metrics.CreateCounter("article_cache_misses", "Number of cache misses for articles");
     private static readonly Gauge CacheHitRatio = Metrics.CreateGauge("article_cache_hit_ratio", "Cache hit ratio for articles");
     private static readonly Gauge CacheMissRatio = Metrics.CreateGauge("article_cache_miss_ratio", "Cache miss ratio for articles");
-
+    #endregion Global Variables
 
     public ArticleCache(IRedisHelper redis, IArticleRepository repo, ILogger<ArticleCache> logger)
     {

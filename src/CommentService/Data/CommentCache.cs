@@ -6,6 +6,7 @@ namespace CommentService.Data;
 
 public class CommentCache
 {
+    #region Global Variables
     private readonly IRedisHelper _redis;
     private readonly ICommentRepository _repo;
     private readonly string _recentArticlesKey = "recent_articles"; // Key to track recent articles with comments
@@ -15,6 +16,7 @@ public class CommentCache
     private static readonly Counter CacheMisses = Metrics.CreateCounter("comment_cache_misses", "Number of cache misses for comments");
     private static readonly Gauge CacheHitRatio = Metrics.CreateGauge("comment_cache_hit_ratio", "Cache hit ratio for comments");
     private static readonly Gauge CacheMissRatio = Metrics.CreateGauge("comment_cache_miss_ratio", "Cache miss ratio for comments");
+    #endregion Global Variables
 
 
     public CommentCache(IRedisHelper redis, ICommentRepository repo)
