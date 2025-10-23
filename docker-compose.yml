@@ -22,14 +22,14 @@ services:
     build:
       context: .
       dockerfile: /src/ArticleService/Dockerfile
-    image: happyheadlines/article-service
+    image: happyheadlines/article-service:${IMAGE_TAG}
     depends_on:
       - sqlserver
     environment:
       DATABASE_NAME: ${ARTICLE_DB}
       SA_PASSWORD: ${SA_PASSWORD}
-    deploy:
-      replicas: 3
+    # deploy:
+    #   replicas: 3
     ports:
       - "8080"
 
