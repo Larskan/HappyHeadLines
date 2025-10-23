@@ -54,8 +54,8 @@ jobs:
         file: src/${{ matrix.folder }}/Dockerfile
         #Args will be overriden in matrix below
         tags: |
-            ${{ env.GHCR_REGISTRY }}/${{ github.repository_owner && github.repository_owner.lower() }}/${{ matrix.service }}:${{ env.IMAGE_TAG }}
-            ${{ env.GHCR_REGISTRY }}/${{ github.repository_owner && github.repository_owner.lower() }}/${{ matrix.service }}:latest
+            ${{ env.GHCR_REGISTRY }}/larskan/${{ matrix.service }}:${{ env.IMAGE_TAG }}
+            ${{ env.GHCR_REGISTRY }}/larskan/${{ matrix.service }}:latest
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-deploy
