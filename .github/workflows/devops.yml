@@ -97,5 +97,5 @@ jobs:
         run: find $GITHUB_WORKSPACE -name docker-compose.yml
       - name: Deploy services
         run: |
-          docker compose -f $GITHUB_WORKSPACE/docker-compose.yml pull
-          IMAGE_TAG=$IMAGE_TAG docker compose -f $GITHUB_WORKSPACE/docker-compose.yml up -d --build
+          docker compose -f ./docker-compose.yml build
+          IMAGE_TAG=$IMAGE_TAG docker compose -f ./docker-compose.yml up -d
