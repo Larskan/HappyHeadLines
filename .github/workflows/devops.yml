@@ -36,7 +36,17 @@ jobs:
       run: |
         services=(article-service draft-service publisher-service comment-service subscriber-service profanity-service newsletter-service)
         for service in "${services[@]}"; do
-          docker build -t happyheadlines/$service:$IMAGE_TAG ./src/${service^}
+          case $service in
+            article-service) folder=ArticleService ;;
+            draft-service) folder=DraftService ;;
+            publisher-service) folder=PublisherService ;;
+            comment-service) folder=CommentService ;;
+            subscriber-service) folder=SubscriberService ;;
+            profanity-service) folder=ProfanityService ;;
+            newsletter-service) folder=NewsletterService ;;
+          esac
+
+          docker build -t happyheadlines/$service:$IMAGE_TAG ./src/$folder
           docker push happyheadlines/$service:$IMAGE_TAG
           docker tag happyheadlines/$service:$IMAGE_TAG happyheadlines/$service:latest
           docker push happyheadlines/$service:latest
