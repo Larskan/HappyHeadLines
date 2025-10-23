@@ -84,6 +84,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      #Debugging
       - name: Debug deploy path
         run: |
             echo "Current directory: $(pwd)"
@@ -96,7 +97,9 @@ jobs:
           ls -l $GITHUB_WORKSPACE
       - name: Find docker-compose.yml
         run: find $GITHUB_WORKSPACE -name docker-compose.yml
+      #Deploy
       - name: Deploy services
         run: |
+          cd $GITHUB_WORKSPACE
           docker compose -f ./docker-compose.yml build
           IMAGE_TAG=$IMAGE_TAG docker compose -f ./docker-compose.yml up -d
