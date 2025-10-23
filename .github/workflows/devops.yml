@@ -1,0 +1,43 @@
+name: Devops Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      SA_PASSWORD: ${{secrets.SA_PASSWORD}}
+    
+    steps:
+    #1. Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    #2. Set up Docker
+    - name: Set up Docker Buildx
+      uses: docker/Setup-buildx-action@v3
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{secrets.DOCKERHUB_USERNAME}}
+        password: ${{secrets.DOCKERHUB_TOKEN}}
+      
+      # 3. Build and push docker images for all services
+    - name: Build and push docker images
+      run: |
+        services=(article-service draft-service publisher-service comment-service subscriber-service profanity-service newsletter-service)
+        for service in "${services[@]}"; do
+          docker build -t happyheadlines/$service ./src/${service^}
+          docker push happyheadlines/$service
+        done
+
+    # 4. Deploy using docker compose
+    - name: Deploy services
+      run: |
+        docker-compose pull
+        docker-compose up -d --build
