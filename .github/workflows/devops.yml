@@ -53,7 +53,7 @@ jobs:
       with:
         #Build all microservices in sequence
         push: true
-        context: src/${{ matrix.folder }}
+        context: .
         file: src/${{ matrix.folder }}/Dockerfile
         #Args will be overriden in matrix below
         tags: |
