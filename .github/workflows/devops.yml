@@ -76,5 +76,5 @@ jobs:
     steps:
       - name: Deploy services
         run: |
-          docker compose pull
-          IMAGE_TAG=$IMAGE_TAG docker compose up -d --build
+          docker compose -f ./docker-compose.yml pull
+          IMAGE_TAG=$IMAGE_TAG docker compose -f ./docker-compose.yml up -d --build
