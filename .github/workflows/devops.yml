@@ -71,6 +71,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-deploy
     steps:
+      #Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
       - name: Debug deploy path
         run: |
             echo "Current directory: $(pwd)"
