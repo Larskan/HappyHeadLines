@@ -21,7 +21,7 @@ services:
   article-service:
     build:
       context: .
-      dockerfile: /src/ArticleService/Dockerfile
+      dockerfile: ./src/ArticleService/Dockerfile
     image: happyheadlines/article-service:${IMAGE_TAG}
     depends_on:
       sqlserver:
@@ -38,7 +38,7 @@ services:
   draft-service:
     build:
       context: .
-      dockerfile: /src/DraftService/Dockerfile
+      dockerfile: ./src/DraftService/Dockerfile
     image: happyheadlines/draft-service
     depends_on:
       sqlserver:
@@ -52,7 +52,7 @@ services:
   publisher-service:
     build:
       context: .
-      dockerfile: /src/PublisherService/Dockerfile
+      dockerfile: ./src/PublisherService/Dockerfile
     image: happyheadlines/publisher-service
     depends_on:
       sqlserver:
@@ -65,7 +65,7 @@ services:
   comment-service:
     build:
       context: .
-      dockerfile: /src/CommentService/Dockerfile
+      dockerfile: ./src/CommentService/Dockerfile
     image: happyheadlines/comment-service
     depends_on:
       - sqlserver
@@ -79,7 +79,7 @@ services:
   subscriber-service:
     build:
       context: .
-      dockerfile: /src/SubscriberService/Dockerfile
+      dockerfile: ./src/SubscriberService/Dockerfile
     image: happyheadlines/subscriber-service
     depends_on:
       sqlserver:
@@ -93,7 +93,7 @@ services:
   profanity-service:
     build:
       context: .
-      dockerfile: /src/ProfanityService/Dockerfile
+      dockerfile: ./src/ProfanityService/Dockerfile
     image: happyheadlines/profanity-service
     depends_on:
       sqlserver:
@@ -107,7 +107,7 @@ services:
   newsletter-service:
     build:
       context: .
-      dockerfile: /src/NewsletterService/Dockerfile
+      dockerfile: ./src/NewsletterService/Dockerfile
     image: happyheadlines/newsletter-service
     depends_on:
       sqlserver:
