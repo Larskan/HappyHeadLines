@@ -74,6 +74,18 @@ jobs:
       run:
         working-directory: ${{github.workspace}}
     steps:
+      - name: Debug deploy path
+        run: |
+            echo "Current directory: $(pwd)"
+            ls -l
+            ls -l src
+            ls -l ../
+      - name: Debug GitHub workspace
+        run: |
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          ls -l $GITHUB_WORKSPACE
+      - name: Find docker-compose.yml
+        run: find $GITHUB_WORKSPACE -name docker-compose.yml
       - name: Deploy services
         run: |
           docker compose -f ./docker-compose.yml pull
