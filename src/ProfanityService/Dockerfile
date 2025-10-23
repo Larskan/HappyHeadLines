@@ -7,22 +7,22 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Copy project files
-COPY ["src/ProfanityService/ProfanityService.csproj", "ProfanityService/"]
-COPY ["src/Shared/Shared.csproj", "Shared/"]
+COPY src/ProfanityService/ProfanityService.csproj ProfanityService/
+COPY src/Shared/Shared.csproj Shared/
 
 # Restore dependencies
-RUN dotnet restore "ProfanityService/ProfanityService.csproj"
+WORKDIR /src/ProfanityService
+RUN dotnet restore "ProfanityService.csproj"
 
 # Copy everything else
-COPY src/ProfanityService/. ProfanityService/
-COPY src/Shared/. Shared/
+COPY src/ProfanityService/. .
+COPY src/Shared/. ../Shared/ 
 
 # Build
-WORKDIR "/src/ProfanityService"
-RUN dotnet build "ProfanityService.csproj" -c Release -o /app/build
+# WORKDIR "/src/ProfanityService"
+# RUN dotnet build "ProfanityService.csproj" -c Release -o /app/build
 
 # Publish
-FROM build AS publish
 RUN dotnet publish "ProfanityService.csproj" -c Release -o /app/publish
 
 # Final image

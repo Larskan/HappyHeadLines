@@ -7,22 +7,22 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Copy project files
-COPY ["src/NewsletterService/NewsletterService.csproj", "NewsletterService/"]
-COPY ["src/Shared/Shared.csproj", "Shared/"]
+COPY src/NewsletterService/NewsletterService.csproj NewsletterService/
+COPY src/Shared/Shared.csproj Shared/
 
 # Restore dependencies
-RUN dotnet restore "NewsletterService/NewsletterService.csproj"
+WORKDIR /src/NewsletterService
+RUN dotnet restore "NewsletterService.csproj"
 
 # Copy everything else
-COPY src/NewsletterService/. NewsletterService/
-COPY src/Shared/. Shared/
+COPY src/NewsletterService/. .
+COPY src/Shared/. ../Shared/
 
 # Build
-WORKDIR "/src/NewsletterService"
-RUN dotnet build "NewsletterService.csproj" -c Release -o /app/build
+# WORKDIR "/src/NewsletterService"
+# RUN dotnet build "NewsletterService.csproj" -c Release -o /app/build
 
 # Publish
-FROM build AS publish
 RUN dotnet publish "NewsletterService.csproj" -c Release -o /app/publish
 
 # Final image

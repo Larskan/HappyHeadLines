@@ -7,22 +7,22 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Copy project files
-COPY ["src/PublisherService/PublisherService.csproj", "PublisherService/"]
-COPY ["src/Shared/Shared.csproj", "/Shared/"]
+COPY src/PublisherService/PublisherService.csproj PublisherService/
+COPY src/Shared/Shared.csproj /Shared/
 
 # Restore dependencies
-RUN dotnet restore "PublisherService/PublisherService.csproj"
+WORKDIR /src/PublisherService
+RUN dotnet restore "PublisherService.csproj"
 
 # Copy everything else
-COPY src/PublisherService/. PublisherService/
-COPY src/Shared/. Shared/
+COPY src/PublisherService/. .
+COPY src/Shared/. ../Shared/
 
 # Build
-WORKDIR "/src/PublisherService"
-RUN dotnet build "PublisherService.csproj" -c Release -o /app/build
+# WORKDIR "/src/PublisherService"
+# RUN dotnet build "PublisherService.csproj" -c Release -o /app/build
 
 # Publish
-FROM build AS publish
 RUN dotnet publish "PublisherService.csproj" -c Release -o /app/publish
 
 # Final image
