@@ -29,6 +29,9 @@ jobs:
     continue-on-error: true
     env:
       IMAGE_TAG: ${{github.sha}}
+      GHCR_REGISTRY: ghcr.io
+      GHCR_OWNER: ${{ github.repository_owner }}
+      GHCR_PAT: ${{secrets.GHCR_PAT}}
       DOCKER_REGISTRY: happyheadlines
       SA_PASSWORD: ${{secrets.SA_PASSWORD}}
     
@@ -37,17 +40,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-      #Set up Docker
-    - name: Set up Docker Buildx
-      uses: docker/Setup-buildx-action@v3
-
-      #Login to docker hub
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{secrets.DOCKERHUB_USERNAME}}
-        password: ${{secrets.DOCKERHUB_TOKEN}}
-      
+      #Login to GHCR
+    - name: Login to GHCR
+      run: echo "${{ env.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+  
       #Build and push docker images for all services
     - name: Build and push microservices
       uses: docker/build-push-action@v6
@@ -58,10 +54,8 @@ jobs:
         file: src/${{ matrix.folder }}/Dockerfile
         #Args will be overriden in matrix below
         tags: |
-            ${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:${{ env.IMAGE_TAG }}
-            ${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:latest
-        cache-from: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:buildcache
-        cache-to: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:buildcache,mode=max
+            ${{ env.GHCR_REGISTRY }}/${{ github.repository_owner }}/${{ matrix.service }}:${{ env.IMAGE_TAG }}
+            ${{ env.GHCR_REGISTRY }}/${{ github.repository_owner }}/${{ matrix.service }}:latest
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-deploy
