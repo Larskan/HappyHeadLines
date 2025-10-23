@@ -7,7 +7,7 @@ The overall todo
 - Implement ProfanityService. Fault Isolated with swimlanes - Done
 - Implement ProfanityDatabase.  - Done
 - Implement Draftservice with logging and tracing. - Done
-- Implement DraftDatabase with logging and tracing. - Done
+- Implement DraftDatabase with logging and tracing. - Dones
 - Log and trace in central repo that is reuseable across entire architecture. - Done
 - Add automatic cleaning of logs. - Not started
 - Implement PublisherService with focus on distributed tracing. - Done
