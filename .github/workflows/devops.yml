@@ -61,11 +61,11 @@ jobs:
             ${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:lates
         cache-from: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:buildcache
         cache-to: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:buildcache,mode=max
-deploy:
-  runs-on: ubuntu-latest
-  needs: build-and-deploy
-  steps:
-    - name: Deploy services
-      run: |
-        docker-compose pull
-        IMAGE_TAG=${{ github.sha }} docker-compose up -d --build
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-deploy
+    steps:
+      - name: Deploy services
+        run: |
+          docker-compose pull
+          IMAGE_TAG=${{ github.sha }} docker-compose up -d --build
