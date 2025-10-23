@@ -9,42 +9,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_TAG: ${{github.sha}}
-      DOCKER_REGISTRY: happyheadlines
-      SA_PASSWORD: ${{secrets.SA_PASSWORD}}
-    
-    steps:
-    #Checkout the code
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    #Set up Docker
-    - name: Set up Docker Buildx
-      uses: docker/Setup-buildx-action@v3
-
-    #Login to docker hub
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{secrets.DOCKERHUB_USERNAME}}
-        password: ${{secrets.DOCKERHUB_TOKEN}}
-      
-      #Build and push docker images for all services
-    - name: Build and push microservices
-      uses: docker/build-push-action@v6
-      with:
-        #Build all microservices in sequence
-        push: true
-        #Args will be overriden in matrix below
-        tags: |
-            ${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:${{ env.IMAGE_TAG }}
-            ${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:lates
-        cache-from: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:buildcache
-        cache-to: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:buildcache,mode=max
-        context: .
-        file: src/${{ matrix.folder }}/Dockerfile
-      strategy:
+    strategy:
         matrix:
           include:
             - service: article-service
@@ -61,9 +26,46 @@ jobs:
               folder: ProfanityService
             - service: newsletter-service
               folder: NewsletterService
-              
-    #Deploy using docker compose
+    env:
+      IMAGE_TAG: ${{github.sha}}
+      DOCKER_REGISTRY: happyheadlines
+      SA_PASSWORD: ${{secrets.SA_PASSWORD}}
+    
+    steps:
+      #Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+      #Set up Docker
+    - name: Set up Docker Buildx
+      uses: docker/Setup-buildx-action@v3
+
+      #Login to docker hub
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{secrets.DOCKERHUB_USERNAME}}
+        password: ${{secrets.DOCKERHUB_TOKEN}}
+      
+      #Build and push docker images for all services
+    - name: Build and push microservices
+      uses: docker/build-push-action@v6
+      with:
+        #Build all microservices in sequence
+        push: true
+        context: .
+        file: src/${{ matrix.folder }}/Dockerfile
+        #Args will be overriden in matrix below
+        tags: |
+            ${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:${{ env.IMAGE_TAG }}
+            ${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:lates
+        cache-from: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:buildcache
+        cache-to: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:buildcache,mode=max
+deploy:
+  runs-on: ubuntu-latest
+  needs: build-and-deploy
+  steps:
     - name: Deploy services
       run: |
         docker-compose pull
-        IMAGE_TAG=$IMAGE_TAG docker-compose up -d --build
+        IMAGE_TAG=${{ github.sha }} docker-compose up -d --build
