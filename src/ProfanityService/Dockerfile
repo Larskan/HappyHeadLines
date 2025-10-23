@@ -28,5 +28,5 @@ RUN dotnet publish "ProfanityService.csproj" -c Release -o /app/publish
 # Final image
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "ProfanityService.dll"]

@@ -9,26 +9,26 @@ WORKDIR /src
 WORKDIR /src
 
 # Copy project files
-COPY ["src/SubscriberService/SubscriberService.csproj", "SubscriberService/"]
-COPY ["src/Shared/Shared.csproj", "Shared/"]
+COPY src/SubscriberService/SubscriberService.csproj SubscriberService/
+COPY src/Shared/Shared.csproj Shared/
 
 # Restore dependencies
-RUN dotnet restore "SubscriberService/SubscriberService.csproj"
+WORKDIR /src/SubscriberService
+RUN dotnet restore "SubscriberService.csproj"
 
 # Copy everything else
-COPY src/SubscriberService/. SubscriberService/
-COPY src/Shared/. Shared/
+COPY src/SubscriberService/. .
+COPY src/Shared/. ../Shared/
 
 # Build
-WORKDIR "/src/SubscriberService"
-RUN dotnet build "SubscriberService.csproj" -c Release -o /app/build
+# WORKDIR "/src/SubscriberService"
+# RUN dotnet build "SubscriberService.csproj" -c Release -o /app/build
 
 # Publish
-FROM build AS publish
 RUN dotnet publish "SubscriberService.csproj" -c Release -o /app/publish
 
 # Final image
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "SubscriberService.dll"]
