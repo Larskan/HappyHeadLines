@@ -48,7 +48,7 @@ jobs:
           esac
 
           echo "Building $service from ./src/$folder"
-          docker build -t happyheadlines/$service:$IMAGE_TAG -f src/$folder/Dockerfile .
+          docker build -t happyheadlines/$service:$IMAGE_TAG -f ./src/$folder/Dockerfile .
           docker push happyheadlines/$service:$IMAGE_TAG
           docker tag happyheadlines/$service:$IMAGE_TAG happyheadlines/$service:latest
           docker push happyheadlines/$service:latest
