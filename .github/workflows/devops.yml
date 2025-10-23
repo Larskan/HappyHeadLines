@@ -65,6 +65,7 @@ jobs:
         tags: |
             ${{ env.GHCR_REGISTRY }}/larskan/${{ matrix.service }}:${{ env.IMAGE_TAG }}
             ${{ env.GHCR_REGISTRY }}/larskan/${{ matrix.service }}:latest
+        cache-from: type=registry,ref=ghcr.io/larskan/${{ matrix.service }}:buildcache,mode=disabled
 
   deploy:
     runs-on: ubuntu-latest
