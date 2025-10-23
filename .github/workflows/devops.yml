@@ -78,6 +78,7 @@ jobs:
       PROFANITY_DB: ProfanityDB
       PUBLISHER_DB: PublisherDB
       SUBSCRIBER_DB: SubscriberDB
+      SA_PASSWORD: ${{ secrets.SA_PASSWORD }}
     steps:
       #Checkout the code
       - name: Checkout code
