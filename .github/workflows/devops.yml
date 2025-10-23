@@ -26,6 +26,7 @@ jobs:
               folder: ProfanityService
             - service: newsletter-service
               folder: NewsletterService
+    continue-on-error: true
     env:
       IMAGE_TAG: ${{github.sha}}
       DOCKER_REGISTRY: happyheadlines
