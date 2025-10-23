@@ -10,53 +10,59 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
+      IMAGE_TAG: ${{github.sha}}
+      DOCKER_REGISTRY: happyheadlines
       SA_PASSWORD: ${{secrets.SA_PASSWORD}}
     
     steps:
-    #1. Checkout the code
+    #Checkout the code
     - name: Checkout code
       uses: actions/checkout@v3
 
-    #2. Set image tag based on commit SHA
-    - name: Set image tag
-      run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
-    
-    #3. Set up Docker
+    #Set up Docker
     - name: Set up Docker Buildx
       uses: docker/Setup-buildx-action@v3
 
+    #Login to docker hub
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{secrets.DOCKERHUB_USERNAME}}
         password: ${{secrets.DOCKERHUB_TOKEN}}
       
-      #4. Build and push docker images for all services
-    - name: Build and push docker images
-      working-directory: ${{ github.workspace }}
-      run: |
-        services=(article-service draft-service publisher-service comment-service subscriber-service profanity-service newsletter-service)
-        for service in "${services[@]}"; do
-          case $service in
-            article-service) folder=ArticleService ;;
-            draft-service) folder=DraftService ;;
-            publisher-service) folder=PublisherService ;;
-            comment-service) folder=CommentService ;;
-            subscriber-service) folder=SubscriberService ;;
-            profanity-service) folder=ProfanityService ;;
-            newsletter-service) folder=NewsletterService ;;
-          esac
-
-          echo "Building $service from ./src/$folder"
-          docker build -t happyheadlines/$service:$IMAGE_TAG -f ./src/$folder/Dockerfile .
-          docker push happyheadlines/$service:$IMAGE_TAG
-          docker tag happyheadlines/$service:$IMAGE_TAG happyheadlines/$service:latest
-          docker push happyheadlines/$service:latest
-        done
-      env:
-        IMAGE_TAG: ${{ github.sha }}
-
-    #5. Deploy using docker compose
+      #Build and push docker images for all services
+    - name: Build and push microservices
+      uses: docker/build-push-action@v6
+      with:
+        #Build all microservices in sequence
+        push: true
+        #Args will be overriden in matrix below
+        tags: |
+            ${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:${{ env.IMAGE_TAG }}
+            ${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:lates
+        cache-from: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:buildcache
+        cache-to: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:buildcache,mode=max
+        context: .
+        file: src/${{ matrix.folder }}/Dockerfile
+      strategy:
+        matrix:
+          include:
+            - service: article-service
+              folder: ArticleService
+            - service: draft-service
+              folder: DraftService
+            - service: publisher-service
+              folder: PublisherService
+            - service: comment-service
+              folder: CommentService
+            - service: subscriber-service
+              folder: SubscriberService
+            - service: profanity-service
+              folder: ProfanityService
+            - service: newsletter-service
+              folder: NewsletterService
+              
+    #Deploy using docker compose
     - name: Deploy services
       run: |
         docker-compose pull
