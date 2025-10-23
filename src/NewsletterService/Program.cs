@@ -25,11 +25,24 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<NewsletterDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("NewsletterDb")));
 
 // RabbitMQ singleton connection
-builder.Services.AddSingleton(sp =>
-{
-    var factory = new ConnectionFactory() { HostName = "rabbitmq" };
-    return (IConnection)factory.CreateConnectionAsync();
-});
+builder.Services.AddSingleton<IRabbitConnectionProvider, RabbitConnectionProvider>();
+// builder.Services.AddSingleton<IArticleQueuePublisher>(sp =>
+// {
+//     var provider = sp.GetRequiredService<IRabbitConnectionProvider>();
+//     var connection = provider.GetConnectionAsync().GetAwaiter().GetResult();
+//     return new ArticleQueue(connection);
+// });
+// builder.Services.AddSingleton<IArticleQueueSubscriber>(sp =>
+// {
+//     var provider = sp.GetRequiredService<IRabbitConnectionProvider>();
+//     var connection = provider.GetConnectionAsync().GetAwaiter().GetResult();
+//     return new ArticleQueue(connection);
+// });
+// builder.Services.AddSingleton(sp =>
+// {
+//     var factory = new ConnectionFactory() { HostName = "rabbitmq" };
+//     return (IConnection)factory.CreateConnectionAsync();
+// });
 
 // Dependency Injection
 builder.Services.AddScoped<INewsArticleRepository, NewsArticleRepository>();

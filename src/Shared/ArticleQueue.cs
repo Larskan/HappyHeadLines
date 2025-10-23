@@ -19,18 +19,21 @@ public interface IArticleQueueSubscriber
 
 public class ArticleQueue : IArticleQueuePublisher, IArticleQueueSubscriber
 {
-    private readonly IConnection _connection;
+    // private readonly IConnection _connection;
+    private readonly IRabbitConnectionProvider _provider;
     private static readonly ActivitySource activitySource = new("Shared.ArticleQueue");
     public static RabbitHelper RabbitHelper { get; } = new();
 
-    public ArticleQueue(IConnection connection)
+    public ArticleQueue(IRabbitConnectionProvider provider)
     {
-        _connection = connection;
+        _provider = provider;
     }
+
+    private async Task<IConnection> GetConnectionAsync() => await _provider.GetConnectionAsync();
 
     public async Task PublishArticleAsync(PublishArticle article, CancellationToken ct = default)
     {
-        using var channel = await _connection.CreateChannelAsync(cancellationToken: ct);
+        using var channel = await (await GetConnectionAsync()).CreateChannelAsync(cancellationToken: ct);
         // Declare exchange
         await channel.ExchangeDeclareAsync("article_exchange", ExchangeType.Fanout, durable: true, cancellationToken: ct);
 
@@ -51,7 +54,7 @@ public class ArticleQueue : IArticleQueuePublisher, IArticleQueueSubscriber
 
     public async Task SubscribeAsync(Func<PublishArticle, CancellationToken, Task> handler, CancellationToken ct = default)
     {
-        using var channel = await _connection.CreateChannelAsync(cancellationToken: ct);
+        using var channel = await (await GetConnectionAsync()).CreateChannelAsync(cancellationToken: ct);
         // Declare exchange and queue
         await channel.ExchangeDeclareAsync("article_exchange", ExchangeType.Fanout, durable: true, cancellationToken: ct);
 

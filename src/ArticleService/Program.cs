@@ -26,7 +26,7 @@ builder.Services.AddSingleton<CollectorRegistry>(Metrics.DefaultRegistry);
 
 // Add Redis
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect("redis:6379"));
-builder.Services.AddSingleton<RedisHelper>();
+builder.Services.AddSingleton<IRedisHelper, RedisHelper>();
 builder.Services.AddSingleton<ArticleCache>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<ArticleCache>());
 

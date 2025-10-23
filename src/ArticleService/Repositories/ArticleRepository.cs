@@ -9,9 +9,9 @@ namespace ArticleService.Repositories;
 public class ArticleRepository: IArticleRepository
 {
     private readonly IServiceProvider _services ;
-    private readonly RedisHelper _redis;
+    private readonly IRedisHelper _redis;
 
-    public ArticleRepository(IServiceProvider services, RedisHelper redis)
+    public ArticleRepository(IServiceProvider services, IRedisHelper redis)
     {
         _services = services;
         _redis = redis;

@@ -24,7 +24,8 @@ services:
       dockerfile: /src/ArticleService/Dockerfile
     image: happyheadlines/article-service:${IMAGE_TAG}
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_healthy
     environment:
       DATABASE_NAME: ${ARTICLE_DB}
       SA_PASSWORD: ${SA_PASSWORD}
@@ -54,7 +55,8 @@ services:
       dockerfile: /src/PublisherService/Dockerfile
     image: happyheadlines/publisher-service
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_healthy
     environment:
       DATABASE_NAME: ${PUBLISHER_DB}
       SA_PASSWORD: ${SA_PASSWORD}
@@ -80,7 +82,8 @@ services:
       dockerfile: /src/SubscriberService/Dockerfile
     image: happyheadlines/subscriber-service
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_healthy
     environment:
       DATABASE_NAME: ${SUBSCRIBER_DB}
       SA_PASSWORD: ${SA_PASSWORD}
@@ -93,7 +96,8 @@ services:
       dockerfile: /src/ProfanityService/Dockerfile
     image: happyheadlines/profanity-service
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_healthy
     environment:
       DATABASE_NAME: ${PROFANITY_DB}
       SA_PASSWORD: ${SA_PASSWORD}
@@ -106,7 +110,8 @@ services:
       dockerfile: /src/NewsletterService/Dockerfile
     image: happyheadlines/newsletter-service
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_healthy
     environment:
       DATABASE_NAME: ${NEWSLETTER_DB}
       SA_PASSWORD: ${SA_PASSWORD}
@@ -127,16 +132,16 @@ services:
   
 
 # ---- SEQ ----
-  seq:
-    image: datalust/seq:latest
-    container_name: seq
-    restart: always
-    ports:
-      - "5341:80" # Seq UI at http://localhost:5341
-    environment:
-      ACCEPT_EULA: "Y"
-    volumes:
-      - seq-data:/data
+  # seq:
+  #   image: datalust/seq:latest
+  #   container_name: seq
+  #   restart: always
+  #   ports:
+  #     - "5341:80" # Seq UI at http://localhost:5341
+  #   environment:
+  #     ACCEPT_EULA: "Y"
+  #   volumes:
+  #     - seq-data:/data
 
 # ----- REDIS -----
   redis:
@@ -170,4 +175,4 @@ services:
 
 volumes:
   mssql-data:
-  seq-data:
+  # seq-data:
