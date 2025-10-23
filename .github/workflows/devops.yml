@@ -33,25 +33,28 @@ jobs:
       
       #4. Build and push docker images for all services
     - name: Build and push docker images
+      working-directory: ${{ github.workspace }}
       run: |
         services=(article-service draft-service publisher-service comment-service subscriber-service profanity-service newsletter-service)
         for service in "${services[@]}"; do
           case $service in
             article-service) folder=ArticleService ;;
-            comment-service) folder=CommentService ;;
             draft-service) folder=DraftService ;;
-            newsletter-service) folder=NewsletterService ;;
-            profanity-service) folder=ProfanityService ;;
             publisher-service) folder=PublisherService ;;
+            comment-service) folder=CommentService ;;
             subscriber-service) folder=SubscriberService ;;
+            profanity-service) folder=ProfanityService ;;
+            newsletter-service) folder=NewsletterService ;;
           esac
 
           echo "Building $service from ./src/$folder"
-          docker build -t happyheadlines/$service:$IMAGE_TAG -f ./src/$folder/Dockerfile .
+          docker build -t happyheadlines/$service:$IMAGE_TAG -f src/$folder/Dockerfile .
           docker push happyheadlines/$service:$IMAGE_TAG
           docker tag happyheadlines/$service:$IMAGE_TAG happyheadlines/$service:latest
           docker push happyheadlines/$service:latest
         done
+      env:
+        IMAGE_TAG: ${{ github.sha }}
 
     #5. Deploy using docker compose
     - name: Deploy services
