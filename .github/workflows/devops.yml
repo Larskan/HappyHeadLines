@@ -33,7 +33,6 @@ jobs:
       GHCR_OWNER: ${{ github.repository_owner }}
       GHCR_PAT: ${{secrets.GHCR_PAT}}
       DOCKER_REGISTRY: happyheadlines
-      SA_PASSWORD: ${{secrets.SA_PASSWORD}}
     
     steps:
       #Checkout the code
@@ -70,11 +69,20 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-deploy
+    env:
+      IMAGE_TAG: ${{github.sha}}
+      ARTICLE_DB: ArticleDB
+      COMMENT_DB: CommentDB
+      DRAFT_DB: DraftDB
+      NEWSLETTER_DB: NewsletterDB
+      PROFANITY_DB: ProfanityDB
+      PUBLISHER_DB: PublisherDB
+      SUBSCRIBER_DB: SubscriberDB
     steps:
       #Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Debug deploy path
         run: |
             echo "Current directory: $(pwd)"
