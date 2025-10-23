@@ -53,12 +53,12 @@ jobs:
       with:
         #Build all microservices in sequence
         push: true
-        context: .
+        context: src/${{ matrix.folder }}
         file: src/${{ matrix.folder }}/Dockerfile
         #Args will be overriden in matrix below
         tags: |
             ${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:${{ env.IMAGE_TAG }}
-            ${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:lates
+            ${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:latest
         cache-from: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:buildcache
         cache-to: type=registry,ref=${{ env.DOCKER_REGISTRY }}/${{ matrix.service }}:buildcache,mode=max
   deploy:
