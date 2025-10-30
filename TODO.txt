@@ -102,3 +102,7 @@ Contains the ArticleQueue
 docker build -t happyheadlines/draft-service -f src/DraftService/Dockerfile .
 docker-compose up --build draft-service sqlserver
 docker run -d -p 5001:8080 happyheadlines/draft-service
+
+
+- Week 44
+Fault Isolation: he subscription_exchanges, you subscribe to the exchange independently = fault isolation.

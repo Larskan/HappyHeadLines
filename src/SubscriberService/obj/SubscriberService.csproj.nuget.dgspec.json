@@ -205,7 +205,11 @@
               "target": "Package",
               "version": "[9.0.9, )"
             },
-            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+            "Microsoft.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[9.0.4, )"
             }

@@ -115,6 +115,7 @@ services:
     environment:
       DATABASE_NAME: ${NEWSLETTER_DB}
       SA_PASSWORD: ${SA_PASSWORD}
+      SubscriberService__BaseUrl: "http://subscriber-service:8080"
     ports:
       - "8040:8080"
 # ------- RABBITMQ ---------

@@ -31,24 +31,6 @@ public class ArticleQueueSubscriber : BackgroundService
         var queue = await channel.QueueDeclareAsync(cancellationToken: ct);
         await channel.QueueBindAsync(queue.QueueName, "article_exchange", "", cancellationToken: ct);
 
-        // Declare a queue and get its name
-        // var queueDeclare = await channel.QueueDeclareAsync(
-        //     queue: "", //Empty means RabbitMQ generates one.
-        //     durable: true,
-        //     exclusive: false,
-        //     autoDelete: false,
-        //     arguments: null,
-        //     cancellationToken: ct
-        // );
-        // var queueName = queueDeclare.QueueName;
-
-        // await channel.QueueBindAsync(
-        //     queue: queueName,
-        //     exchange: "article_exchange",
-        //     routingKey: "",
-        //     cancellationToken: ct
-        // );
-
         var consumer = new AsyncEventingBasicConsumer(channel);
         consumer.ReceivedAsync += async (sender, args) =>
         {
