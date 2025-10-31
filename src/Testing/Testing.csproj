@@ -26,6 +26,7 @@
     <ProjectReference Include="..\ArticleService\ArticleService.csproj" />
     <ProjectReference Include="..\DraftService\DraftService.csproj" />
     <ProjectReference Include="..\PublisherService\PublisherService.csproj" />
+    <ProjectReference Include="..\NewsletterService\NewsletterService.csproj" />
   </ItemGroup>
 
 </Project>

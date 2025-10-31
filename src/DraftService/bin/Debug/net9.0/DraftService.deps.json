@@ -12,6 +12,9 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.9",
           "Microsoft.EntityFrameworkCore.Tools": "9.0.9",
           "Serilog.AspNetCore": "9.0.0",
+          "Serilog.Enrichers.Environment": "3.0.1",
+          "Serilog.Enrichers.Process": "3.0.0",
+          "Serilog.Enrichers.Thread": "4.0.0",
           "Shared": "1.0.0",
           "Swashbuckle.AspNetCore": "9.0.4"
         },
@@ -1236,6 +1239,39 @@
           }
         }
       },
+      "Serilog.Enrichers.Environment/3.0.1": {
+        "dependencies": {
+          "Serilog": "4.2.0"
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.Enrichers.Environment.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
+        }
+      },
+      "Serilog.Enrichers.Process/3.0.0": {
+        "dependencies": {
+          "Serilog": "4.2.0"
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.Enrichers.Process.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
+        }
+      },
+      "Serilog.Enrichers.Thread/4.0.0": {
+        "dependencies": {
+          "Serilog": "4.2.0"
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.Enrichers.Thread.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.0.0"
+          }
+        }
+      },
       "Serilog.Extensions.Hosting/9.0.0": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.9",
@@ -2339,6 +2375,27 @@
       "sha512": "sha512-JslDajPlBsn3Pww1554flJFTqROvK9zz9jONNQgn0D8Lx2Trw8L0A8/n6zEQK1DAZWXrJwiVLw8cnTR3YFuYsg==",
       "path": "serilog.aspnetcore/9.0.0",
       "hashPath": "serilog.aspnetcore.9.0.0.nupkg.sha512"
+    },
+    "Serilog.Enrichers.Environment/3.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9BqCE4C9FF+/rJb/CsQwe7oVf44xqkOvMwX//CUxvUR25lFL4tSS6iuxE5eW07quby1BAyAEP+vM6TWsnT3iqw==",
+      "path": "serilog.enrichers.environment/3.0.1",
+      "hashPath": "serilog.enrichers.environment.3.0.1.nupkg.sha512"
+    },
+    "Serilog.Enrichers.Process/3.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/wPYz2PDCJGSHNI+Z0PAacZvrgZgrGduWqLXeC2wvW6pgGM/Bi45JrKy887MRcRPHIZVU0LAlkmJ7TkByC0boQ==",
+      "path": "serilog.enrichers.process/3.0.0",
+      "hashPath": "serilog.enrichers.process.3.0.0.nupkg.sha512"
+    },
+    "Serilog.Enrichers.Thread/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-C7BK25a1rhUyr+Tp+1BYcVlBJq7M2VCHlIgnwoIUVJcicM9jYcvQK18+OeHiXw7uLPSjqWxJIp1EfaZ/RGmEwA==",
+      "path": "serilog.enrichers.thread/4.0.0",
+      "hashPath": "serilog.enrichers.thread.4.0.0.nupkg.sha512"
     },
     "Serilog.Extensions.Hosting/9.0.0": {
       "type": "package",

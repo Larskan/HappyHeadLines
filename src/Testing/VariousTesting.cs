@@ -24,6 +24,8 @@ using DraftService.Data;
 using PublisherService.Repositories;
 using Shared.Models;
 using System.Threading;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using NewsletterService.Services;
 
 
 
@@ -101,6 +103,45 @@ public class VariousTesting
         // Assert
         Assert.Single(result);
         mockRepo.Verify(r => r.GetByArticleIdAsync(It.IsAny<int>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task SubscriptionEventProcessor_ShouldSendWelcomeMail_WhenNewSubscriberReceived()
+    {
+        // Arrange
+        var mockQueue = new Mock<ISubscriberQueueSubscriber>();
+        var mockEmailSender = new Mock<IEmailSender>();
+        var logger = new Mock<ILogger<SubscriptionEventProcessor>>();
+
+        var fakeSub = new Subscription
+        {
+            SubscriberId = 1,
+            Email = "lars@example.com",
+            Name = "Lars Hein"
+        };
+
+        // Mock SubscribeSubscriberAsync to invoke handler
+        mockQueue
+            .Setup(q => q.SubscribeSubscriberAsync(It.IsAny<Func<Subscription, CancellationToken, Task>>(), It.IsAny<CancellationToken>()))
+            .Returns<Func<Subscription, CancellationToken, Task>, CancellationToken>(async (handler, ct) =>
+            {
+                // Simulate receiving a new subscriber
+                await handler(fakeSub, ct);
+            });
+
+        var processor = new SubscriptionEventProcessor(mockQueue.Object, logger.Object, mockEmailSender.Object);
+
+        // Act
+        using var cts = new CancellationTokenSource(1000); // Short lived
+        await processor.StartAsync(cts.Token);
+
+        // Assert
+        mockEmailSender.Verify(
+            s => s.SendEmailAsync(
+                "lars@example.com",
+                It.Is<string>(subj => subj.Contains("Welcome")),
+                It.IsAny<string>()),
+            Times.Once);
     }
 
 

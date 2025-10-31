@@ -207,3 +207,8 @@ C:\Users\Bruger\VSCode\HappyHeadLines\src\NewsletterService\bin\Debug\net9.0\xun
 C:\Users\Bruger\VSCode\HappyHeadLines\src\NewsletterService\bin\Debug\net9.0\xunit.core.dll
 C:\Users\Bruger\VSCode\HappyHeadLines\src\NewsletterService\bin\Debug\net9.0\xunit.execution.dotnet.dll
 C:\Users\Bruger\VSCode\HappyHeadLines\src\NewsletterService\bin\Debug\net9.0\Serilog.Sinks.Seq.dll
+C:\Users\Bruger\VSCode\HappyHeadLines\src\NewsletterService\bin\Debug\net9.0\Microsoft.Extensions.Http.dll
+C:\Users\Bruger\VSCode\HappyHeadLines\src\NewsletterService\bin\Debug\net9.0\Microsoft.Extensions.Http.Polly.dll
+C:\Users\Bruger\VSCode\HappyHeadLines\src\NewsletterService\bin\Debug\net9.0\Polly.dll
+C:\Users\Bruger\VSCode\HappyHeadLines\src\NewsletterService\bin\Debug\net9.0\Polly.Core.dll
+C:\Users\Bruger\VSCode\HappyHeadLines\src\NewsletterService\bin\Debug\net9.0\Polly.Extensions.Http.dll
