@@ -26,6 +26,8 @@ using Shared.Models;
 using System.Threading;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using NewsletterService.Services;
+using FeatureHubSDK;
+using NewsletterService.FeatureFlags;
 
 
 
@@ -111,6 +113,7 @@ public class VariousTesting
         // Arrange
         var mockQueue = new Mock<ISubscriberQueueSubscriber>();
         var mockEmailSender = new Mock<IEmailSender>();
+        var mockFeature = new Mock<FeatureHubService>();
         var logger = new Mock<ILogger<SubscriptionEventProcessor>>();
 
         var fakeSub = new Subscription
@@ -129,7 +132,7 @@ public class VariousTesting
                 await handler(fakeSub, ct);
             });
 
-        var processor = new SubscriptionEventProcessor(mockQueue.Object, logger.Object, mockEmailSender.Object);
+        var processor = new SubscriptionEventProcessor(mockQueue.Object, logger.Object, mockEmailSender.Object, mockFeature.Object);
 
         // Act
         using var cts = new CancellationTokenSource(1000); // Short lived
@@ -142,6 +145,42 @@ public class VariousTesting
                 It.Is<string>(subj => subj.Contains("Welcome")),
                 It.IsAny<string>()),
             Times.Once);
+    }
+
+    [Fact]
+    public void IsSubscriberServiceOnline_ReturnsTrue_WhenFeatureEnabled()
+    {
+        // Arrange
+        var mockRepo = new Mock<IFeatureHubRepository>();
+        mockRepo.Setup(r => r.Exists("SubscriberServiceActive")).Returns(true);
+        mockRepo.Setup(r => r.IsEnabled("SubscriberServiceActive")).Returns(true);
+
+        var mockLogger = new Mock<ILogger<FeatureHubService>>();
+        var service = new FeatureHubService(mockLogger.Object, mockRepo.Object);
+
+        // act
+        var result = service.IsSubscriberServiceOnline();
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void IsSubscriberServiceOnline_ReturnsFalse_WhenFeatureDisabled()
+    {
+        // Arrange
+        var mockRepo = new Mock<IFeatureHubRepository>();
+        mockRepo.Setup(r => r.Exists("SubscriberServiceActive")).Returns(true);
+        mockRepo.Setup(r => r.IsEnabled("SubscriberServiceActive")).Returns(false);
+
+        var mockLogger = new Mock<ILogger<FeatureHubService>>();
+        var service = new FeatureHubService(mockLogger.Object, mockRepo.Object);
+
+        // act
+        var result = service.IsSubscriberServiceOnline();
+
+        // Assert
+        Assert.False(result);
     }
 
 
