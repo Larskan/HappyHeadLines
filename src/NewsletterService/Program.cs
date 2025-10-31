@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Builder;
 using Shared;
 using Polly;
 using Polly.Extensions.Http;
+using NewsletterService.FeatureFlags;
+using FeatureHubSDK;
 
 
 
@@ -46,6 +48,11 @@ builder.Services.AddScoped<INewsArticleRepository, NewsArticleRepository>();
 builder.Services.AddSingleton<IArticleQueuePublisher, ArticleQueue>();
 builder.Services.AddSingleton<IArticleQueueSubscriber, ArticleQueue>();
 
+// Feature hub
+var featureHubConfig = new EdgeFeatureHubConfig("http://featurehub:8085", "a5313e1e-1f38-41ec-b26d-44538a6d2a5b/6cF3ZPRH7d599HBBsLJrD3zz5WgF48eMR4hJ04Gz");
+var repo = await featureHubConfig.NewContext().Build();
+builder.Services.AddSingleton(repo);
+builder.Services.AddSingleton<FeatureHubService>();
 
 // Background subscriber service
 builder.Services.AddHostedService<NewsletterArticleSubscriber>();

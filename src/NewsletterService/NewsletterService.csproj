@@ -19,6 +19,7 @@
     <PackageReference Include="Polly" Version="8.6.4" />
     <PackageReference Include="Polly.Extensions.Http" Version="3.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
+    <PackageReference Include="FeatureHub.SDK" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>

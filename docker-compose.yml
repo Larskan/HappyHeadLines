@@ -130,7 +130,7 @@ services:
     image: openzipkin/zipkin
     ports:
       - "9411:9411" # Zipkin ui at http://localhost:9411
-  
+
 
 # ---- SEQ ----
   # seq:
@@ -173,7 +173,17 @@ services:
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./grafana/dashboards:/var/lib/grafana/dashboards
+  
+  # ------ FeatureHub ------
+  featurehub:
+    image: featurehub/party-server:latest
+    restart: always
+    volumes:
+      - featurehub-h2-data:/db
+    ports:
+      - 8085:8085
 
 volumes:
   mssql-data:
   # seq-data:
+  featurehub-h2-data:

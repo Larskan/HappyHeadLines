@@ -4,6 +4,7 @@ using Shared.Models;
 using Shared;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using NewsletterService.FeatureFlags;
 
 namespace NewsletterService.Services;
 
@@ -12,22 +13,24 @@ public class SubscriptionEventProcessor : BackgroundService
     private readonly ISubscriberQueueSubscriber _subscriberQueue;
     private readonly ILogger<SubscriptionEventProcessor> _logger;
     private IEmailSender _emailSender; //email sender abstraction
+    private readonly FeatureHubService _featureHub;
 
     // If Subscriber is turned on, it will send welcome mails to new subscribers.
-    public SubscriptionEventProcessor(ISubscriberQueueSubscriber subscriberQueue, ILogger<SubscriptionEventProcessor> logger, IEmailSender emailSender)
+    public SubscriptionEventProcessor(ISubscriberQueueSubscriber subscriberQueue, ILogger<SubscriptionEventProcessor> logger, IEmailSender emailSender, FeatureHubService featureHubService)
     {
         _subscriberQueue = subscriberQueue;
         _logger = logger;
         _emailSender = emailSender;
+        _featureHub = featureHubService;
     }
 
     protected override async Task ExecuteAsync(CancellationToken ct)
     {
-        // if (!_featureHubContext["SubscriberServiceActive"].IsEnabled)
-        // {
-        //     _logger.LogInformation("SubscriberService is turned off. Skipping subscription processing...");
-        //     return;
-        // }
+        if (!_featureHub.IsSubscriberServiceOnline())
+        {
+            _logger.LogInformation("SubscriberService is turned off. Skipping subscription processing...");
+            return;
+        }
         try
         {
             //SubscribeAsync blocks until cancelletion
