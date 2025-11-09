@@ -4,9 +4,6 @@ using DraftService.Data;
 using Microsoft.EntityFrameworkCore;
 using Shared;
 using System.Diagnostics;
-using Serilog;
-
-
 
 namespace DraftService.Services;
 
@@ -14,72 +11,104 @@ namespace DraftService.Services;
 public class DraftService(DraftDbContext context, Serilog.ILogger serilogger) : IDraftService
 {
     private readonly DraftDbContext _context = context;
-    // private readonly ILogger<DraftService> _logger;
     private readonly Serilog.ILogger _serilogger = serilogger;
 
     public async Task<DraftCreateDto> CreateDraftAsync(DraftCreateDto draftCreateDto)
     {
         // manual span for demo
         using var activity = new Activity("CreateDraft").Start();
-        var draft = new Draft
+
+        try
         {
-            Title = draftCreateDto.Title,
-            Body = draftCreateDto.Body,
-            AuthorId = draftCreateDto.AuthorId,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        };
-
-        _context.Drafts.Add(draft);
-        await _context.SaveChangesAsync();
-
-        _serilogger.Information("Created draft {@Draft}", draft);
-        _serilogger.Information("Lars ran this piece of code");
-
-        activity?.SetTag("draft.id", draft.Id);
-        activity?.SetTag("draft.authorId", draft.AuthorId);
-
-        return ToDtoCreate(draft);
+            var draft = new Draft
+            {
+                Title = draftCreateDto.Title,
+                Body = draftCreateDto.Body,
+                AuthorId = draftCreateDto.AuthorId,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+            _context.Drafts.Add(draft);
+            await _context.SaveChangesAsync();
+            _serilogger.Information("Created draft {@Draft}", draft);
+            activity?.SetTag("draft.id", draft.Id);
+            activity?.SetTag("draft.authorId", draft.AuthorId);
+            return ToDtoCreate(draft);
+        }
+        catch (Exception ex)
+        {
+            _serilogger.Error(ex, "Error occurred while creating draft");
+            throw;
+        }
     }
 
     public async Task<DraftDto?> GetDraftByIdAsync(int id)
     {
-        var draft = await _context.Drafts.FindAsync(id);
-        _serilogger.Information("Retrieved draft {@Draft}", draft);
-        _serilogger.Information("Lars ran this piece of code");
-        return draft == null ? null : ToDto(draft);
+        try
+        {
+            var draft = await _context.Drafts.FindAsync(id);
+            if(draft == null) return null;
+            _serilogger.Information("Retrieved draft {@Draft}", draft);
+            return ToDto(draft);
+        }
+        catch (Exception ex)
+        {
+            _serilogger.Error(ex, "Error occurred while fetching draft with ID {DraftId}", id);
+            throw;
+        }
     }
 
     public async Task<List<DraftDto>> GetAllDraftsAsync(int authorId)
     {
-        var drafts = await _context.Drafts.ToListAsync();
-        _serilogger.Information("Retrieved {Count} drafts for author {AuthorId}", drafts.Count, authorId);
-        return drafts.Select(ToDto).ToList();
+        try
+        {
+            var drafts = await _context.Drafts.Where(d => d.AuthorId == authorId).ToListAsync();
+            _serilogger.Information("Retrieved {Count} drafts for author {AuthorId}", drafts.Count, authorId);
+            return drafts.Select(ToDto).ToList();
+        }
+        catch (Exception ex)
+        {
+            _serilogger.Error(ex, "Error occurred while fetching drafts for author {AuthorId}", authorId);
+            throw;
+        }
     }
 
     public async Task<bool> UpdateDraftAsync(int id, DraftUpdateDto draftUpdateDto)
     {
-        var draft = await _context.Drafts.FindAsync(id);
-        if (draft == null) return false;
-
-        draft.Title = draftUpdateDto.Title;
-        draft.Body = draftUpdateDto.Body;
-        draft.UpdatedAt = DateTime.UtcNow;
-
-        _serilogger.Information("Updating draft {@Draft}", draft);
-
-        await _context.SaveChangesAsync();
-        return true;
+        try
+        {
+            var draft = await _context.Drafts.FindAsync(id);
+            if (draft == null) return false;
+            draft.Title = draftUpdateDto.Title;
+            draft.Body = draftUpdateDto.Body;
+            draft.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            _serilogger.Information("Updated draft {@Draft}", draft);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _serilogger.Error(ex, "Error occurred while updating draft with ID {DraftId}", id);
+            throw;
+        }
     }
 
     public async Task<bool> DeleteDraftAsync(int id)
     {
-        var draft = await _context.Drafts.FindAsync(id);
-        if (draft == null) return false;
-
-        _context.Drafts.Remove(draft);
-        await _context.SaveChangesAsync();
-        return true;
+        try
+        {
+            var draft = await _context.Drafts.FindAsync(id);
+            if (draft == null) return false;
+            _context.Drafts.Remove(draft);
+            await _context.SaveChangesAsync();
+            _serilogger.Information("Successfully deleted draft with ID {DraftId}", id);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _serilogger.Error(ex, "Error occurred while deleting draft with ID {DraftId}", id);
+            throw;
+        }
     }
 
     private static DraftDto ToDto(Draft d) =>

@@ -24,14 +24,6 @@ The overall todo
 - Tested DraftService - Done
 - C4 Diagram for all 4 levels - Done
 -----
-- Get some data on the dashboard, would be nice, but not super needed since it works.
-- Test if ArticleQueue works. - 
-- Test PublisherService
-- Test SubscriberService
-- Test NewsletterService
-- Test Seq
-- Create the README - 
-- Create the presentation
 
 
 Commands

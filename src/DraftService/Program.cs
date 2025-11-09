@@ -5,6 +5,7 @@ using DraftService.Services;
 using DraftService.Repositories;
 using Shared;
 using Serilog;
+using StackExchange.Redis;
 
 
 
@@ -33,6 +34,13 @@ builder.Services.AddSwaggerGen();
 var dbName = builder.Configuration["DATABASE_NAME"] ?? "DraftDb";
 // Allows the service to use its own database.
 builder.Services.AddDbContext<DraftDbContext>(options => options.UseSqlServer($"Server=sqlserver,1433;Database={dbName};User Id=sa;Password={builder.Configuration["SA_PASSWORD"]};TrustServerCertificate=True"));
+
+// Add Redis
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect("redis:6379"));
+builder.Services.AddSingleton<RedisHelper>();
+
+// Adding DraftCache
+builder.Services.AddSingleton<DraftCache>();    
 
 // Dependency Injection
 builder.Services.AddScoped<IDraftService, DraftService.Services.DraftService>();
