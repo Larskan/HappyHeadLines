@@ -1,12 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using PublisherService.Repositories;
-using Shared;
 using Shared.Models;
-using RabbitMQ.Client;
 using PublisherService.Interfaces;
-using System.Threading.Channels;
 using System.Diagnostics;
-using Serilog;
 
 namespace PublisherService.Controllers;
 
